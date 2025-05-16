@@ -7,6 +7,5 @@ export default {
   dialect: "postgresql",
   dbCredentials: {
     url: env.DATABASE_URL,
-  },
-  tablesFilter: ["booky_*"],
+  }
 } satisfies Config;
