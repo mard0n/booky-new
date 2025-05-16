@@ -30,7 +30,7 @@ function Explore() {
 
 function Divider() {
   return (
-    <div className="inline-block h-full min-h-[1em] w-[1px] self-stretch bg-neutral-200 dark:bg-white/10" />
+    <div className="inline-block h-full min-h-[1em] w-[1px] self-stretch bg-neutral-200 dark:bg-neutral-600" />
   );
 }
 
@@ -41,7 +41,7 @@ export default async function Navbar() {
   } = await supabase.auth.getUser()
 
   return (
-    <div className="flex h-20 items-center justify-between gap-8 px-8 border-neutral-200 dark:border-neutral-800 border-b">
+    <div className="flex h-20 items-center justify-between gap-8 px-8 border-neutral-200 dark:border-neutral-600 border-b">
       <Logo />
       <Divider />
       <Search />
