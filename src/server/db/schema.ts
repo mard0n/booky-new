@@ -13,6 +13,7 @@ import {
   pgEnum,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { type User as AuthorizedUser } from '@supabase/supabase-js';
 
 // Define Enum for SellerListing sellerType
 export const sellerTypeEnum = pgEnum('seller_type', [
@@ -30,11 +31,45 @@ export const users = pgTable('users', {
   supabaseUserId: text('supabase_user_id').unique().notNull(), // Assuming this is critical
 });
 
+
+export type User = typeof users.$inferSelect;
+export type AuthUser = AuthorizedUser
+
 export const usersRelations = relations(users, ({ many }) => ({
   reviews: many(reviews),
   shelves: many(shelves),
   bookEntries: many(bookEntries),
 }));
+
+export const genreTypeEnum = pgEnum('genre_type', [
+  'Fiction',
+  'Non-fiction',
+  'Fantasy',
+  'Mystery',
+  'Romance',
+  'Science Fiction',
+  'Thriller',
+  'Biography',
+  'Self-Help',
+  'History',
+  'Historical',
+  'Travel',
+  'Cooking',
+  'Art',
+  'Music',
+  'Science',
+  'Technology',
+  'Horror',
+  'Western',
+  'Crime',
+  'Drama',
+  'Adventure',
+  'Comedy',
+  'Documentary',
+  'Young Adult',
+  'Poetry',
+  'Historical Fiction'  
+]);
 
 // Book Model
 export const books = pgTable(
@@ -50,7 +85,7 @@ export const books = pgTable(
     publicationDate: timestamp('publication_date', { withTimezone: true }),
     publisher: text('publisher'),
     pageCount: integer('page_count'),
-    genres: text('genres').array(), // For PostgreSQL array type
+    genres: genreTypeEnum('genres').array().notNull(),
     averageRating: real('average_rating'), // 'real' for single precision, 'doublePrecision' for double
   },
   (table) => {
@@ -65,6 +100,8 @@ export const books = pgTable(
     }];
   }
 );
+
+export type Book = typeof books.$inferSelect;
 
 export const booksRelations = relations(books, ({ many }) => ({
   reviews: many(reviews),
@@ -102,6 +139,8 @@ export const reviews = pgTable(
     }];
   }
 );
+
+export type Review = typeof reviews.$inferSelect;
 
 export const reviewsRelations = relations(reviews, ({ one }) => ({
   user: one(users, {
