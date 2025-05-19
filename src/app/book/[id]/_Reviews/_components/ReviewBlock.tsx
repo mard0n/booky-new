@@ -39,7 +39,7 @@ const ReviewBlock: React.FunctionComponent<ReviewBlockProps> = ({
         })}
       </div>
       <ShowMoreText>
-        <div className="mb-2 text-xl">{review.content}</div>
+        <div className="mb-2">{review.content}</div>
       </ShowMoreText>
     </div>
   );

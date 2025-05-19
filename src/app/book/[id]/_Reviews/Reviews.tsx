@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import type { AuthUser } from "~/server/db/schema";
 import { supabase } from "~/lib/supabaseClient";
 import { api } from "~/trpc/react";
-import ReviewBlock from "./ReviewBlock";
-import ReviewForm from "./ReviewForm";
+import ReviewBlock from "./_components/ReviewBlock";
+import ReviewForm from "./_components/ReviewForm";
 import { Button } from "~/components/ui/button";
 
 // type BookReviews = inferRouterOutputs<AppRouter>["book"]["getReviewsByBookId"];
@@ -17,10 +17,7 @@ interface ReviewsProps {
 const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
   const { data: reviews } = api.book.getReviewsByBookId.useQuery({
     id: bookId,
-  });
-
-  console.log('reviews', reviews);
-  
+  });  
 
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 

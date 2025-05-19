@@ -1,38 +1,17 @@
 import { notFound } from "next/navigation";
 import { api } from "~/trpc/server";
 import * as Tabs from "@radix-ui/react-tabs";
-import ShowMoreText from "./_components/ShowMoreText";
+import ShowMoreText from "./_Reviews/_components/ShowMoreText";
 import Rating from "~/components/rating";
 
-import Reviews from "./_components/Reviews";
-
-function BookCover({ src, alt }: { src: string | null; alt: string }) {
-  return (
-    <div className="bg-muted flex aspect-[1/1.51] h-full w-[200px] shrink-0 items-center justify-center overflow-hidden rounded lg:w-[200px] xl:w-[250px] 2xl:w-[300px]">
-      {src ? (
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
-      ) : (
-        <span className="text-muted-foreground">No cover</span>
-      )}
-    </div>
-  );
-}
+import Reviews from "./_Reviews/Reviews";
+import Sellers from "./_Sellers/Sellers";
+import SellerListingsOverview from "./_SellerListingsOverview/SellerListingsOverview";
 
 export default async function BookPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const book = await api.book.getById({ id: id });
   if (!book) return notFound();
-
-  // Fetch data for all tabs
-  // const [reviews, shelves, sellers] = await Promise.all([
-  //   api.book.getReviewsByBookId({ id: id }),
-  //   api.book.getShelvesByBookId({ id: id }),
-  //   api.book.getSellerListingsByBookId({ id: id }),
-  // ]);
-
-  // console.log('reviews', reviews);
-  
-
 
   return (
     <>
@@ -72,6 +51,7 @@ export default async function BookPage({ params }: { params: { id: string } }) {
             </>
           </ShowMoreText>
         </div>
+        <SellerListingsOverview bookId={book.id} />
       </section>
       <section className="container mx-auto my-10 flex gap-5 px-8">
         <div className="hidden lg:invisible lg:block">
@@ -85,12 +65,6 @@ export default async function BookPage({ params }: { params: { id: string } }) {
             >
               Reviews
             </Tabs.Trigger>
-            {/* <Tabs.Trigger
-              value="shelves"
-              className="data-[state=active]:border-primary px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
-            >
-              Shelves
-            </Tabs.Trigger> */}
             <Tabs.Trigger
               value="get"
               className="data-[state=active]:border-primary px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
@@ -101,76 +75,23 @@ export default async function BookPage({ params }: { params: { id: string } }) {
           <Tabs.Content value="reviews" className="py-4">
             <Reviews bookId={book.id} />
           </Tabs.Content>
-          <Tabs.Content value="shelves" className="py-4">
-            {/* {shelves.length === 0 ? (
-              <div className="text-muted-foreground">
-                This book is not on any shelves yet.
-              </div>
-            ) : (
-              <ul className="space-y-2">
-                {shelves.map((entry) => (
-                  <li
-                    key={entry.id}
-                    className="flex flex-col rounded border p-2 md:flex-row md:items-center md:gap-2"
-                  >
-                    <span className="font-semibold">{entry.shelf.name}</span>
-                    <span className="text-muted-foreground text-xs">
-                      by {entry.user.name ?? entry.user.email}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )} */}
-          </Tabs.Content>
           <Tabs.Content value="get" className="py-4">
-            {/* {sellers.length === 0 ? (
-              <div className="text-muted-foreground">
-                No sellers or libraries found for this book.
-              </div>
-            ) : (
-              <ul className="space-y-4">
-                {sellers.map((s) => (
-                  <li
-                    key={s.id}
-                    className="flex flex-col rounded border p-3 md:flex-row md:items-center md:gap-4"
-                  >
-                    <div className="flex-1">
-                      <div className="font-semibold">{s.sellerName}</div>
-                      <div className="text-muted-foreground mb-1 text-xs">
-                        {s.sellerType}
-                      </div>
-                      {s.location && (
-                        <div className="text-xs">{s.location}</div>
-                      )}
-                      {s.availability && (
-                        <div className="text-xs">{s.availability}</div>
-                      )}
-                      {s.notes && (
-                        <div className="text-xs italic">{s.notes}</div>
-                      )}
-                    </div>
-                    {s.price && (
-                      <div className="text-primary font-bold">
-                        {s.price} {s.currency ?? ""}
-                      </div>
-                    )}
-                    {s.websiteUrl && (
-                      <a
-                        href={s.websiteUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-2 text-blue-600 underline"
-                      >
-                        Visit
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )} */}
+            <Sellers bookId={book.id} />
           </Tabs.Content>
         </Tabs.Root>
       </section>
     </>
+  );
+}
+
+function BookCover({ src, alt }: { src: string | null; alt: string }) {
+  return (
+    <div className="bg-muted flex aspect-[1/1.51] h-full w-[200px] shrink-0 items-center justify-center overflow-hidden rounded lg:w-[200px] xl:w-[250px] 2xl:w-[300px]">
+      {src ? (
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
+      ) : (
+        <span className="text-muted-foreground">No cover</span>
+      )}
+    </div>
   );
 }

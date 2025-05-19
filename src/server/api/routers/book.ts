@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { books, genreTypeEnum, reviews } from "~/server/db/schema";
 import { z } from "zod";
-import { sql, eq } from "drizzle-orm";
+import { sql, eq, asc } from "drizzle-orm";
 
 export const bookRouter = createTRPCRouter({
   getPopular: publicProcedure.query(async ({ ctx }) => {
@@ -94,19 +94,65 @@ export const bookRouter = createTRPCRouter({
   getSellerListingsByBookId: publicProcedure.input(z.object({ id: z.string().uuid() })).query(async ({ ctx, input }) => {
     return ctx.db.query.sellerListings.findMany({
       where: (sellerListings, { eq }) => eq(sellerListings.bookId, input.id),
+      orderBy: (sellerListings, { asc }) => [
+        asc(sql`CASE ${sellerListings.transactionType}
+          WHEN 'Free' THEN 1
+          WHEN 'Borrow' THEN 2
+          WHEN 'Buy' THEN 3
+          ELSE 4
+        END`),
+      ],
       columns: {
         id: true,
-        sellerName: true,
-        sellerType: true,
-        location: true,
         price: true,
         currency: true,
-        availability: true,
-        websiteUrl: true,
-        notes: true,
+        available: true,
+        transactionType: true,
+        productLink: true
+      },
+      with: {
+        seller: {
+          columns: {
+            id: true,
+            name: true,
+            type: true,
+            location: true,
+            locationLink: true,
+            websiteUrl: true,
+            telegram: true,
+            instagram: true,
+            phoneNumber: true,
+            facebook: true,
+            imageUrl: true,
+          },
+        },
       },
     });
   }),
+  getBooksBySellerId: publicProcedure.input(z.object({ id: z.string().uuid() })).query(async ({ ctx, input }) => {
+    return ctx.db.query.books.findMany({
+      with: {
+        sellerListings: {
+          where: (sellerListings, { eq }) => eq(sellerListings.sellerId, input.id),
+        },
+      },
+      columns: {
+        id: true,
+        title: true,
+        author: true,
+        isbn10: true,
+        isbn13: true,
+        description: true,
+        coverImageUrl: true,
+        publicationDate: true,
+        publisher: true,
+        pageCount: true,
+        genres: true,
+        averageRating: true,
+      },
+    });
+  }),
+  
   createReview: publicProcedure
     .input(z.object({
       bookId: z.string().uuid(),
