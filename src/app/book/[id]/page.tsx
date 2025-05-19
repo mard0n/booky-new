@@ -8,7 +8,8 @@ import Reviews from "./_Reviews/Reviews";
 import Sellers from "./_Sellers/Sellers";
 import SellerListingsOverview from "./_SellerListingsOverview/SellerListingsOverview";
 
-export default async function BookPage({ params }: { params: { id: string } }) {
+
+export default async function BookPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const book = await api.book.getById({ id: id });
   if (!book) return notFound();

@@ -5,7 +5,7 @@ import Image from "next/image";
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q: string };
+  searchParams: Promise<{ q: string }>;
 }) {
   const {q: query} = await searchParams;
   const supabase = await createClient();
