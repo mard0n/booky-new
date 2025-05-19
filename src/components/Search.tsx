@@ -67,7 +67,7 @@ export default function Search() {
       case "Enter":
         e.preventDefault();
         if (selectedIndex > -1 && suggestions[selectedIndex]) {
-          router.push(`/books/${suggestions[selectedIndex].id}`);
+          router.push(`/book/${suggestions[selectedIndex].id}`);
           setShowSuggestions(false);
         } else if (query.trim()) {
           router.push(`/search?q=${encodeURIComponent(query.trim())}`);
