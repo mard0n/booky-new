@@ -4,12 +4,20 @@ import * as Tabs from "@radix-ui/react-tabs";
 import ShowMoreText from "./_Reviews/_components/ShowMoreText";
 import Rating from "~/components/rating";
 
+// import dynamic from "next/dynamic";
+
 import Reviews from "./_Reviews/Reviews";
 import Sellers from "./_Sellers/Sellers";
 import SellerListingsOverview from "./_SellerListingsOverview/SellerListingsOverview";
+import SaveButton from "~/components/SaveButton";
 
+// const SaveButton = dynamic(() => import("~/components/SaveButton"), { ssr: false });
 
-export default async function BookPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function BookPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const book = await api.book.getById({ id: id });
   if (!book) return notFound();
@@ -17,7 +25,7 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
   return (
     <>
       <section className="container mx-auto my-10 flex flex-col items-center gap-5 px-8 lg:flex-row lg:items-start">
-        <BookCover src={book.coverImageUrl} alt={book.title} />
+        <BookCover src={book.coverImageUrl} alt={book.title} bookId={book.id} />
         <div className="mb-6 flex max-w-3xl flex-col items-center lg:items-start">
           <h1 className="mb-1 text-2xl font-bold">{book.title}</h1>
           <div className="text-muted-foreground mb-2">{book.author}</div>
@@ -56,7 +64,7 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
       </section>
       <section className="container mx-auto my-10 flex gap-5 px-8">
         <div className="hidden lg:invisible lg:block">
-          <BookCover src={book.coverImageUrl} alt={book.title} />
+          <BookCover src={book.coverImageUrl} alt={book.title} bookId={book.id} />
         </div>
         <Tabs.Root defaultValue="reviews" className="w-full max-w-3xl">
           <Tabs.List className="mb-4 flex justify-around border-b">
@@ -85,14 +93,17 @@ export default async function BookPage({ params }: { params: Promise<{ id: strin
   );
 }
 
-function BookCover({ src, alt }: { src: string | null; alt: string }) {
+function BookCover({ src, alt, bookId }: { src: string | null; alt: string; bookId: string }) {
   return (
-    <div className="bg-muted flex aspect-[1/1.51] h-full w-[200px] shrink-0 items-center justify-center overflow-hidden rounded lg:w-[200px] xl:w-[250px] 2xl:w-[300px]">
-      {src ? (
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
-      ) : (
-        <span className="text-muted-foreground">No cover</span>
-      )}
+    <div className="flex flex-col gap-2">
+      <div className="bg-muted flex aspect-[1/1.51] h-full w-[200px] shrink-0 items-center justify-center overflow-hidden rounded lg:w-[200px] xl:w-[250px] 2xl:w-[300px]">
+        {src ? (
+          <img src={src} alt={alt} className="h-full w-full object-cover" />
+        ) : (
+          <span className="text-muted-foreground">No cover</span>
+        )}
+      </div>
+      <SaveButton bookId={bookId} />
     </div>
   );
 }

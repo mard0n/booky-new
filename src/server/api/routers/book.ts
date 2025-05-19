@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { books, genreTypeEnum, reviews } from "~/server/db/schema";
+import { books, genreTypeEnum, reviews, bookEntries, shelves, users } from "~/server/db/schema";
 import { z } from "zod";
-import { sql, eq, asc } from "drizzle-orm";
+import { sql, eq, asc, inArray, and } from "drizzle-orm";
 
 export const bookRouter = createTRPCRouter({
   getPopular: publicProcedure.query(async ({ ctx }) => {
@@ -198,5 +198,133 @@ export const bookRouter = createTRPCRouter({
       await ctx.db.delete(reviews)
         .where(eq(reviews.id, input.reviewId));
       return { success: true };
+    }),
+  addToLibrary: publicProcedure
+    .input(z.object({
+      bookId: z.string().uuid(),
+      supabaseUserId: z.string(),
+      shelfName: z.string().optional().default("My reading list"),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Look up the internal user by supabaseUserId
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) {
+        throw new Error("Not authenticated");
+      }
+      // Find or create the shelf
+      let shelf = await ctx.db.query.shelves.findFirst({
+        where: (shelves, { eq, and }) =>
+          and(eq(shelves.userId, user.id), eq(shelves.name, input.shelfName)),
+      });
+      if (!shelf) {
+        [shelf] = await ctx.db.insert(shelves).values({
+          userId: user.id,
+          name: input.shelfName,
+        }).returning();
+      }
+      if (!shelf) {
+        throw new Error("Could not create or find shelf");
+      }
+      // Check if the book is already on this shelf
+      const existing = await ctx.db.query.bookEntries.findFirst({
+        where: (bookEntries, { eq, and }) =>
+          and(
+            eq(bookEntries.userId, user.id),
+            eq(bookEntries.bookId, input.bookId),
+            eq(bookEntries.shelfId, shelf.id)
+          ),
+      });
+      if (existing) return existing;
+      // Add the book to the shelf
+      const [entry] = await ctx.db.insert(bookEntries).values({
+        userId: user.id,
+        bookId: input.bookId,
+        shelfId: shelf.id,
+      }).returning();
+      return entry;
+    }),
+  getUserShelvesWithBook: publicProcedure
+    .input(z.object({ supabaseUserId: z.string(), bookId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      // Get all shelves for the user
+      const shelves = await ctx.db.query.shelves.findMany({
+        where: (shelves, { eq }) => eq(shelves.userId, user.id),
+      });
+      // Get all bookEntries for this book/user
+      const bookEntries = await ctx.db.query.bookEntries.findMany({
+        where: (bookEntries, { eq, and }) =>
+          and(eq(bookEntries.userId, user.id), eq(bookEntries.bookId, input.bookId)),
+      });
+      const shelfIdsWithBook = new Set(bookEntries.map(be => be.shelfId));
+      return {
+        shelves: shelves.map(shelf => ({
+          id: shelf.id,
+          name: shelf.name,
+          hasBook: shelfIdsWithBook.has(shelf.id),
+        })),
+      };
+    }),
+  setBookShelves: publicProcedure
+    .input(z.object({
+      supabaseUserId: z.string(),
+      bookId: z.string().uuid(),
+      shelfIds: z.array(z.string().uuid()),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      // Get all current bookEntries for this book/user
+      const currentEntries = await ctx.db.query.bookEntries.findMany({
+        where: (bookEntries, { eq, and }) =>
+          and(eq(bookEntries.userId, user.id), eq(bookEntries.bookId, input.bookId)),
+      });
+      const currentShelfIds = new Set(currentEntries.map(be => be.shelfId));
+      const newShelfIds = new Set(input.shelfIds);
+      // Remove from shelves not in newShelfIds
+      const toRemove = currentEntries.filter(be => !newShelfIds.has(be.shelfId));
+      if (toRemove.length > 0) {
+        await ctx.db.delete(bookEntries).where(
+          and(
+            eq(bookEntries.userId, user.id),
+            eq(bookEntries.bookId, input.bookId),
+            inArray(bookEntries.shelfId, toRemove.map(be => be.shelfId))
+          )
+        );
+      }
+      // Add to shelves not in currentShelfIds
+      const toAdd = input.shelfIds.filter(sid => !currentShelfIds.has(sid));
+      if (toAdd.length > 0) {
+        await ctx.db.insert(bookEntries).values(
+          toAdd.map(shelfId => ({
+            userId: user.id,
+            bookId: input.bookId,
+            shelfId,
+          }))
+        );
+      }
+      return { shelfIds: input.shelfIds };
+    }),
+  createShelf: publicProcedure
+    .input(z.object({ supabaseUserId: z.string(), name: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      // Check if shelf with this name already exists for user
+      let shelf = await ctx.db.query.shelves.findFirst({
+        where: (shelves, { eq, and }) => and(eq(shelves.userId, user.id), eq(shelves.name, input.name)),
+      });
+      if (shelf) return { shelf };
+      [shelf] = await ctx.db.insert(shelves).values({ userId: user.id, name: input.name }).returning();
+      return { shelf };
     }),
 }); 
