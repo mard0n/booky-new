@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "~/utils/supabase/server";
 import { signOutAction } from "~/app/actions";
 import { AuthButton } from "./auth-button";
+import Search from "./Search";
 
 function Logo() {
   return (
@@ -11,22 +12,9 @@ function Logo() {
   );
 }
 
-function Search() {
-  return (
-    <div className="flex-1">
-      <input
-        type="text"
-        placeholder="Search for a book..."
-        className="w-full rounded p-2"
-      />
-    </div>
-  );
-}
-
 function Explore() {
   return <Link href="/explore">Explore</Link>;
 }
-
 
 function Divider() {
   return (
