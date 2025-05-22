@@ -25,7 +25,7 @@ function Divider() {
 export default async function Navbar() {
   const supabase = await createClient()
   const {
-    data: { user },
+    data: { user:authUser },
   } = await supabase.auth.getUser()
 
   return (
@@ -36,7 +36,7 @@ export default async function Navbar() {
       <Divider />
       <Explore />
       <Divider />
-      <AuthButton user={user} signOut={signOutAction} />
+      <AuthButton authUser={authUser} signOut={signOutAction} />
     </div>
   );
 }

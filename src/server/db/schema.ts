@@ -33,6 +33,7 @@ export const users = pgTable("users", {
   name: text("name"),
   avatarUrl: text("avatar_url"),
   supabaseUserId: text("supabase_user_id").unique().notNull(), // Assuming this is critical
+  location: text("location"), // nullable location field
 });
 
 export type User = typeof users.$inferSelect;

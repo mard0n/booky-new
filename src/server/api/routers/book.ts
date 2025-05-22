@@ -76,6 +76,7 @@ export const bookRouter = createTRPCRouter({
             email: true,
             id: true,
             supabaseUserId: true,
+            location: true,
           },
         },
       },

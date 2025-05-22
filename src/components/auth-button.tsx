@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   DropdownMenu,
@@ -6,32 +6,42 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback } from "~/components/ui/avatar"
-import Link from "next/link"
-import { type User } from "@supabase/supabase-js"
+} from "~/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import Link from "next/link";
+import type { AuthUser } from "~/server/db/schema";
+import { api } from "~/trpc/react";
 
 interface AuthButtonProps {
-  user: User | null
-  signOut: () => Promise<void>
+  authUser: AuthUser | null;
+  signOut: () => Promise<void>;
 }
 
-export function AuthButton({ user, signOut }: AuthButtonProps) {
+export function AuthButton({ authUser, signOut }: AuthButtonProps) {
+  console.log('authUser', authUser);
+  
+  const { data: user } = api.user.getUserBySupabaseId.useQuery(
+    { id: authUser?.id ?? "" },
+    { enabled: !!authUser?.id }
+  );
+  console.log('user', user);
   return user ? (
     <>
       <Link href="/library">Library</Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="h-8 w-8 cursor-pointer">
-            <AvatarFallback>
-              B
-            </AvatarFallback>
+          <Avatar className="border-input h-8 w-8 border-2">
+            {user.avatarUrl ? (
+              <AvatarImage src={user.avatarUrl} alt="Profile photo preview" />
+            ) : (
+              <AvatarFallback>{user.name?.at(0) ?? user.email?.at(0)}</AvatarFallback>
+            )}
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem asChild>
+          {/* <DropdownMenuItem asChild>
             <Link href="/profile">Profile</Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem asChild>
             <Link href="/settings">Account settings</Link>
           </DropdownMenuItem>
@@ -54,5 +64,5 @@ export function AuthButton({ user, signOut }: AuthButtonProps) {
         <Link href="/sign-up">Sign up</Link>
       </button>
     </div>
-  )
+  );
 }
