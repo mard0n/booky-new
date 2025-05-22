@@ -1,6 +1,6 @@
 import { api } from "~/trpc/server";
-import Banner from "./_components/banner";
 import BookCategorySection from "./_components/BookCategorySection";
+import Banner from "./_components/banner";
 
 export default async function Explore() {
   // Fetch real data from tRPC
