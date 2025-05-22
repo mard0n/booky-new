@@ -124,18 +124,18 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
           <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 review-modal-overlay" />
           <Dialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none review-modal-content">
             <Dialog.Title className="mb-4 text-center text-xl font-semibold">
-              Sign in to write a review
+              Fikr bildirish uchun tizimga kiring
             </Dialog.Title>
             <div className="flex flex-col items-center gap-4 text-center">
               <p className="text-muted-foreground">
-                Please sign in or create an account to share your thoughts about this book.
+                Iltimos, bu kitob haqida fikringizni bildirish uchun tizimga kiring yoki akkaunt yarating.
               </p>
               <div className="flex gap-4">
                 <Link href="/sign-in">
-                  <Button variant="outline">Sign in</Button>
+                  <Button variant="outline">Tizimga kirish</Button>
                 </Link>
                 <Link href="/sign-up">
-                  <Button>Create account</Button>
+                  <Button>Akkaunt yaratish</Button>
                 </Link>
               </div>
             </div>
@@ -192,20 +192,20 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
         <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 review-modal-overlay" />
         <Dialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none review-modal-content">
           <Dialog.Title className="mb-4 text-center text-xl font-semibold">
-            {review?.id ? "Edit your review" : `Write Review`}
+            {review?.id ? "Fikringizni tahrirlash" : `Fikr bildirish`}
           </Dialog.Title>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <StarSelector value={rating} onChange={setRating} />
             <input
               type="text"
-              placeholder="Review title (optional)"
+              placeholder="Fikr sarlavhasi (ixtiyoriy)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] placeholder:text-muted-foreground"
             />
             <textarea
               rows={5}
-              placeholder="What do you think of the book?"
+              placeholder="Kitob haqida nima fikrdasiz?"
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
               className="resize-none w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] placeholder:text-muted-foreground"
@@ -217,7 +217,7 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
                 disabled={submitting || rating === 0}
                 className="mt-2 flex-1"
               >
-                {submitting ? (review?.id ? "Saving..." : "Posting...") : review?.id ? "Save changes" : "Post review"}
+                {submitting ? (review?.id ? "Saqlanmoqda..." : "Yuborilmoqda...") : review?.id ? "O'zgarishlarni saqlash" : "Fikrni yuborish"}
               </Button>
               {review?.id && (
                 <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -228,23 +228,23 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
                       className="mt-2"
                       disabled={submitting}
                     >
-                      Delete
+                      O&apos;chirish
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogTitle>Ishonchingiz komilmi?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your review.
+                        Bu amalni qaytarib bo&apos;lmaydi. Bu sizning fikringizni butunlay o&apos;chirib tashlaydi.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={handleDelete}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
-                        Delete
+                        O&apos;chirish
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

@@ -1,8 +1,5 @@
 import { forgotPasswordAction } from "~/app/actions";
 import { FormMessage, type Message } from "~/components/form-message";
-// import { SubmitButton } from "~/components/submit-button";
-// import { Input } from "~/components/ui/input";
-// import { Label } from "~/components/ui/label";
 import Link from "next/link";
 import { createClient } from "~/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -25,19 +22,19 @@ export default async function ForgotPassword(props: {
     <>
       <form className="flex-1 flex flex-col w-full gap-2 text-foreground [&>input]:mb-6 min-w-64 max-w-64 mx-auto">
         <div>
-          <h1 className="text-2xl font-medium">Reset Password</h1>
+          <h1 className="text-2xl font-medium">Parolni tiklash</h1>
           <p className="text-sm text-secondary-foreground">
-            Already have an account?{" "}
+            Akkauntingiz bormi?{" "}
             <Link className="text-primary underline" href="/sign-in">
-              Sign in
+              Tizimga kirish
             </Link>
           </p>
         </div>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
           <label htmlFor="email">Email</label>
-          <input name="email" placeholder="you@example.com" required />
+          <input name="email" placeholder="siz@misol.com" required />
           <button formAction={forgotPasswordAction}>
-            Reset Password
+            Parolni tiklash
           </button>
           <FormMessage message={searchParams} />
         </div>

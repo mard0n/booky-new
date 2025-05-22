@@ -21,9 +21,7 @@ const SellerListingsOverview: React.FunctionComponent<
 
   return (
     <div className="flex min-w-xs flex-col gap-4 rounded-2xl border p-4">
-      <h1 className="text-lg">
-        Available at ({sellerListings.length}) locations
-      </h1>
+      <h1 className="text-lg">Kitob bor joylar ({sellerListings.length})</h1>
       <ul className="flex flex-col gap-2">
         {sellerListings.map((sellerListing, i) => {
           if (i >= 5) {
@@ -44,16 +42,17 @@ const SellerListingsOverview: React.FunctionComponent<
           );
         })}
       </ul>
-      <div>
-        {sellerListings.length > 5 && (
+
+      {sellerListings.length > 5 && (
+        <div>
           <Button className="mx-auto block" variant="link">
-            See all ({sellerListings.length})
+            Barchasini ko&apos;rish ({sellerListings.length})
           </Button>
-        )}
-        <Button className="mx-auto block" variant="link">
-          Get more details
-        </Button>
-      </div>
+        </div>
+      )}
+      {/* <Button className="mx-auto block" variant="link">
+          Batafsil ma&apos;lumot
+        </Button> */}
     </div>
   );
 };

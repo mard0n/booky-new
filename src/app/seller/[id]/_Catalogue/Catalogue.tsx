@@ -20,7 +20,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({ sellerId }) => {
   if (!books?.length) {
     return (
       <div className="text-muted-foreground">
-        No sellers or libraries found for this book.
+        Bu kitob uchun sotuvchilar yoki kutubxonalar topilmadi.
       </div>
     );
   }

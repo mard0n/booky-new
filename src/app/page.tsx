@@ -1,57 +1,73 @@
 import { api, HydrateClient } from "~/trpc/server";
 import Footer from "../components/Footer";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   // Fetch popular books for covers
   const books = await api.book.getPopular();
 
+  const bookPositions = [
+    [-50, 90, 5, 1],
+    [-30, 90, 0, 1],
+    [-30, 90, 0, 1],
+    [100, 300, -6, 1],
+    [130, -250, 0, 1],
+    [210, 80, 0, 1],
+    [190, 40, 0, 1],
+    [260, 160, 10, 1],
+    [-10, -180, 15, 1],
+    [10, -50, 0, 1],
+    [120, 200, 0, 1],
+    [10, 170, 8, 1],
+    [220, -90, 0, 1],
+    [140, -110, 0, 1],
+    [80, 130, 0, 1],
+    [-60, 60, -6, 1],
+    [70, -20, -12, 1],
+    [80, 30, 0, 1],
+    [100, -30, 0, 1],
+    [150, 50, 7, 1],
+  ];
   return (
     <HydrateClient>
       <main className="flex flex-col">
-        <section className="flex flex-col items-center justify-center py-16">
-          <h1 className="mb-8 text-center text-3xl font-extrabold md:text-4xl">
-            Discover, discuss, and
-            <br />
-            get books from places near you
+        <section className="flex flex-col items-center justify-center py-20">
+          <h1 className="mb-25 pb-2 text-center font-serif text-5xl font-semibold tracking-tighter">
+            Yangi kitoblarni kashf eting, <br />muhokama qiling va ularni <br /> atrofingizdagi joylardan oling
           </h1>
-          <div className="mb-12 flex max-w-4xl flex-wrap justify-center gap-4">
-            {books
-              .slice(0, 14)
-              .map((book, i) => (
+          <div className="grid w-full max-w-5xl grid-cols-4 justify-center pb-[400px]">
+            {bookPositions.map((position, index) => (
+              <div key={books[index]?.id} className="relative">
                 <div
-                  key={book.id}
-                  className="bg-muted flex h-36 w-24 items-center justify-center rounded-lg border shadow"
+                  className="bg-muted absolute flex aspect-[1/1.51] w-24 shrink-0 overflow-hidden rounded-md border shadow"
                   style={{
-                    transform: `translateY(${((i % 3) - 1) * 20}px) rotate(${(i % 2 === 0 ? 1 : -1) * (5 + i)}deg)`,
+                    transform: `translateY(${position[0]}px) translateX(${position[1]}px) rotate(${position[2]}deg) scale(${position[3]})`,
                   }}
                 >
-                  {book.coverImageUrl ? (
-                    <img
-                      src={book.coverImageUrl}
-                      alt={book.title}
-                      className="h-full w-full object-cover"
-                    />
+                  {books[index]?.coverImageUrl ? (
+                    <Link href={`/book/${books[index].id}`}>
+                      <img
+                        src={books[index].coverImageUrl}
+                        alt={books[index].title}
+                        className="h-full w-full object-cover"
+                      />
+                    </Link>
                   ) : (
-                    <span className="text-muted-foreground">No cover</span>
+                    <span className="text-muted-foreground">Muqovasiz</span>
                   )}
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </section>
-        <section className="bg-muted/40 flex flex-col items-center py-16">
-          <h2 className="mb-10 text-2xl font-bold md:text-3xl">
-            We are expanding
-          </h2>
-          <div className="flex flex-wrap justify-center gap-12">
-            <div className="flex flex-col items-center gap-3">
-              <div className="bg-card flex h-20 w-20 items-center justify-center rounded-xl border">
-                {/* City illustration placeholder */}
-                <span role="img" aria-label="city" className="text-3xl">
-                  🏙️
-                </span>
-              </div>
-              <span className="font-semibold">3 cities</span>
+        <section className="bg-muted flex flex-col items-center py-16">
+          <h1 className="mb-10 pb-2 text-center font-serif text-5xl font-semibold tracking-tighter">
+            Bizning faoliyatimiz kengaymoqda
+          </h1>
+          <div className="grid grid-cols-2 container mx-auto max-w-5xl">
+            <div className="relative row-span-2 bg-card aspect-square w-full h-full">
+              <span className="absolute">3 shaxar</span>
             </div>
             <div className="flex flex-col items-center gap-3">
               <div className="bg-card flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl border">
@@ -63,9 +79,9 @@ export default async function Home() {
                 />
               </div>
               <span className="text-center font-semibold">
-                153 libraries
+                150+ kutubxona
                 <br />
-                and bookshops
+                va kitob do&apos;konlari
               </span>
             </div>
             <div className="flex flex-col items-center gap-3">
@@ -75,7 +91,7 @@ export default async function Home() {
                   📚
                 </span>
               </div>
-              <span className="font-semibold">150,00 books</span>
+              <span className="font-semibold">150,000 kitoblar</span>
             </div>
           </div>
         </section>

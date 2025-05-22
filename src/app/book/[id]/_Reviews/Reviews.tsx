@@ -44,12 +44,12 @@ const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
     return (
       <>
         <div className="mb-4 flex justify-between">
-          <h2 className="mb-4 text-2xl font-bold">Ratings & Reviews</h2>
+          <h2 className="mb-4 text-2xl font-bold">Baholar va fikrlar</h2>
           <Button onClick={() => setIsReviewFormOpen(true)}>
-            + Write a review
+            + Fikr bildirish
           </Button>
         </div>
-        <div className="text-muted-foreground">No reviews yet.</div>
+        <div className="text-muted-foreground">Hali fikrlar yo&apos;q.</div>
         <ReviewForm
           bookId={bookId}
           user={user ?? undefined}
@@ -71,18 +71,18 @@ const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
       <div className="mb-8 flex flex-col gap-10">
         {userReview && (
           <div>
-            <h2 className="mb-4 text-2xl font-bold">Your Review</h2>
+            <h2 className="mb-4 text-2xl font-bold">Sizning fikringiz</h2>
             <ReviewBlock review={userReview} reviewer={userReview.user} />
-            <Button onClick={() => setIsReviewFormOpen(true)}>Edit</Button>
+            <Button onClick={() => setIsReviewFormOpen(true)}>Tahrirlash</Button>
           </div>
         )}
         {otherReviews.length ? (
           <div>
             <div className="mb-4 flex justify-between">
-              <h2 className="mb-4 text-2xl font-bold">Ratings & Reviews</h2>
+              <h2 className="mb-4 text-2xl font-bold">Baholar va fikrlar</h2>
               {!userReview && (
                 <Button onClick={() => setIsReviewFormOpen(true)}>
-                  + Write a review
+                  + Fikr bildirish
                 </Button>
               )}
             </div>

@@ -13,12 +13,12 @@ function Logo() {
 }
 
 function Explore() {
-  return <Link href="/explore">Explore</Link>;
+  return <Link href="/explore">Tanishish</Link>;
 }
 
 function Divider() {
   return (
-    <div className="inline-block h-full min-h-[1em] w-[1px] self-stretch bg-neutral-200 dark:bg-neutral-600" />
+    <div className="inline-block h-full min-h-[1em] w-[1px] self-stretch border-r" />
   );
 }
 
@@ -29,7 +29,7 @@ export default async function Navbar() {
   } = await supabase.auth.getUser()
 
   return (
-    <div className="flex h-20 items-center justify-between gap-8 px-8 border-neutral-200 dark:border-neutral-600 border-b">
+    <div className="flex h-20 items-center justify-between gap-8 px-8 border-b">
       <Logo />
       <Divider />
       <Search />

@@ -1,4 +1,5 @@
 'use client'
+import { SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -85,8 +86,8 @@ export default function Search() {
       <input
         ref={inputRef}
         type="text"
-        placeholder="Search for a book..."
-        className="w-full rounded p-2"
+        placeholder="Kitob izlang..."
+        className="w-full rounded p-2 focus:outline-none focus:ring-0 pl-11 border-none "
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -94,10 +95,11 @@ export default function Search() {
         }}
         onKeyDown={handleKeyDown}
       />
+      <SearchIcon className="absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground" />
       {showSuggestions && (query || isLoading) && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700 max-h-96 overflow-y-auto">
+        <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700 max-h-96 overflow-y-auto">
           {isLoading ? (
-            <div className="p-4 text-center text-neutral-500">Loading...</div>
+            <div className="p-4 text-center text-neutral-500">Izlamoqda...</div>
           ) : suggestions.length > 0 ? (
             <div>
               {suggestions.map((book, index) => (
@@ -117,7 +119,7 @@ export default function Search() {
               ))}
             </div>
           ) : (
-            <div className="p-4 text-center text-neutral-500">No results found</div>
+            <div className="p-4 text-center text-neutral-500">Natija topilmadi</div>
           )}
         </div>
       )}

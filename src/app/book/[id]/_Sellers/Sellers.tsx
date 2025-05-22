@@ -24,7 +24,7 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
   if (!sellerListings?.length) {
     return (
       <div className="text-muted-foreground">
-        No sellers or libraries found for this book.
+        Bu kitob uchun sotuvchilar yoki kutubxonalar topilmadi.
       </div>
     );
   }
@@ -36,20 +36,20 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
   }) => {
     switch (sellerListing.transactionType) {
       case "Free":
-        return <Button>Get for Free</Button>;
+        return <Button>Bepul olish</Button>;
 
       case "Borrow":
-        return <Button>Borrow</Button>;
+        return <Button>Ijaraga olish</Button>;
 
       case "Buy":
         return (
           <Button>
-            Buy for {sellerListing.currency}
-            {sellerListing.price}
+            {sellerListing.currency}
+            {sellerListing.price} ga sotib olish
           </Button>
         );
       default:
-        return <Button>Get</Button>;
+        return <Button>Olish</Button>;
     }
   };
 

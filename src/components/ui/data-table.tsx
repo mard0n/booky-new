@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     <div>
       <div className="flex items-center pb-4">
         <input
-          placeholder="Search..."
+          placeholder="Qidirish..."
           value={globalFilter ?? ""}
           onChange={e => setGlobalFilter(e.target.value)}
           className="max-w-sm border rounded px-2 py-1"
@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  Natijalar topilmadi.
                 </TableCell>
               </TableRow>
             )}
@@ -107,7 +107,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} of {table.getRowModel().rows.length} row(s) shown.
+          {table.getFilteredRowModel().rows.length} ta {table.getRowModel().rows.length} ta qatordan.
         </div>
         <div className="space-x-2">
           <button
@@ -115,14 +115,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            Oldingi
           </button>
           <button
             className="border rounded px-2 py-1"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            Keyingi
           </button>
         </div>
       </div>

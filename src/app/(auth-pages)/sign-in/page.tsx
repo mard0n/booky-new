@@ -21,33 +21,33 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
 
   return (
     <form className="flex-1 flex flex-col min-w-64">
-      <h1 className="text-2xl font-medium">Sign in</h1>
+      <h1 className="text-2xl font-medium">Tizimga kirish</h1>
       <p className="text-sm text-foreground">
-        Don&apos;t have an account?{" "}
+        Akkauntingiz yo&apos;qmi?{" "}
         <Link className="text-foreground font-medium underline" href="/sign-up">
-          Sign up
+          Ro&apos;yxatdan o&apos;tish
         </Link>
       </p>
       <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
         <label htmlFor="email">Email</label>
-        <input name="email" placeholder="you@example.com" required />
+        <input name="email" placeholder="siz@misol.com" required />
         <div className="flex justify-between items-center">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Parol</label>
           <Link
             className="text-xs text-foreground underline"
             href="/forgot-password"
           >
-            Forgot Password?
+            Parolni unutdingizmi?
           </Link>
         </div>
         <input
           type="password"
           name="password"
-          placeholder="Your password"
+          placeholder="Parolingiz"
           required
         />
         <button formAction={signInAction}>
-          Sign in
+          Kirish
         </button>
         <FormMessage message={searchParams} />
       </div>

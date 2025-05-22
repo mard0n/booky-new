@@ -27,7 +27,7 @@ export function BookCard({ book, onDragStart }: BookCardProps) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <span className="text-muted-foreground">No cover</span>
+            <span className="text-muted-foreground">Muqovasiz</span>
           )}
         </div>
         <div className="truncate text-sm font-semibold">{title}</div>

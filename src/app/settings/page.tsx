@@ -72,11 +72,11 @@ export default function SettingsPage() {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        setMessage({ error: 'Only image files are allowed.' });
+        setMessage({ error: 'Faqat rasmlar ruxsat etiladi.' });
         return;
       }
       if (file.size > 2 * 1024 * 1024) {
-        setMessage({ error: 'File size must be less than 2MB.' });
+        setMessage({ error: "Fayl hajmi 2MB dan kichik bo'lishi kerak." });
         return;
       }
       setPhotoFile(file);
@@ -90,7 +90,7 @@ export default function SettingsPage() {
     e.preventDefault();
     setMessage(null);
     if (!supabaseUserId) {
-      setMessage({ error: "User not authenticated." });
+      setMessage({ error: "Foydalanuvchi autentifikatsiyadan o'tmagan." });
       return;
     }
     let avatarUrl = profilePhoto;
@@ -118,11 +118,11 @@ export default function SettingsPage() {
         location,
         avatarUrl: avatarUrl ?? undefined,
       });
-      setMessage({ success: "Profile updated successfully!" });
+      setMessage({ success: "Profil muvaffaqiyatli yangilandi!" });
       userQuery.refetch();
       setPhotoFile(null);
     } catch (err: unknown) {
-      setMessage({ error: (err as { message?: string })?.message ?? "Failed to update profile." });
+      setMessage({ error: (err as { message?: string })?.message ?? "Profilni yangilashda xatolik yuz berdi." });
     }
   };
 
@@ -136,7 +136,7 @@ export default function SettingsPage() {
   if (userQuery.isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <span className="text-muted-foreground">Loading...</span>
+        <span className="text-muted-foreground">Yuklanmoqda...</span>
       </div>
     );
   }
@@ -148,7 +148,7 @@ export default function SettingsPage() {
         className="bg-background rounded-xl border p-8 shadow-md w-full max-w-xl flex flex-col gap-6 relative"
         aria-label="Account settings form"
       >
-        <h2 className="text-2xl font-bold mb-2">Account settings</h2>
+        <h2 className="text-2xl font-bold mb-2">Hisob sozlamalari</h2>
         <div className="flex items-center gap-4 mb-2">
           <label htmlFor="profile-photo" className="cursor-pointer flex items-center gap-2 group">
             <Avatar className="h-16 w-16 border-2 border-input">
@@ -161,7 +161,7 @@ export default function SettingsPage() {
             <span
               className="ml-2 group-hover:underline"
             >
-              Upload photo
+              Rasm yuklash
             </span>
             <input
               id="profile-photo"
@@ -181,18 +181,18 @@ export default function SettingsPage() {
               onClick={handleRemovePhoto}
               disabled={updateProfile.isPending}
             >
-              Remove
+              O&apos;chirish
             </Button>
           )}
         </div>
         <div className="flex gap-4">
           <div className="flex-1">
-            <label htmlFor="username" className="font-semibold">Username</label>
+            <label htmlFor="username" className="font-semibold">Foydalanuvchi nomi</label>
             <Input
               id="username"
               value={username}
               onChange={e => setUsername(e.target.value)}
-              placeholder="Enter your username"
+              placeholder="Foydalanuvchi nomingizni kiriting"
               required
               disabled={updateProfile.isPending}
               aria-required="true"
@@ -211,12 +211,12 @@ export default function SettingsPage() {
           </div>
         </div>
         <div>
-          <label htmlFor="location" className="font-semibold">Location</label>
+          <label htmlFor="location" className="font-semibold">Manzil</label>
           <Input
             id="location"
             value={location}
             onChange={e => setLocation(e.target.value)}
-            placeholder="Enter your location"
+            placeholder="Manzilingizni kiriting"
             disabled={updateProfile.isPending}
           />
         </div>
@@ -225,7 +225,7 @@ export default function SettingsPage() {
         </div>
         <div>
           <Button type="submit" className="w-40" disabled={updateProfile.isPending || !isDirty}>
-            {updateProfile.isPending ? "Saving..." : "Save changes"}
+            {updateProfile.isPending ? "Saqlanmoqda..." : "O'zgarishlarni saqlash"}
           </Button>
         </div>
       </form>

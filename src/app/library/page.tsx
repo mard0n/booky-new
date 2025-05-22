@@ -42,13 +42,13 @@ function ReviewModal({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg">
-          <h2 className="mb-4 text-lg font-bold">Add Review</h2>
-          <div className="mb-4">(Review form goes here for book {bookId})</div>
+          <h2 className="mb-4 text-lg font-bold">Fikr qo&apos;shish</h2>
+          <div className="mb-4">(Fikr formasi bu yerda {bookId} kitobi uchun)</div>
           <button
             className="bg-primary mt-2 rounded px-4 py-2 text-white"
             onClick={() => onOpenChange(false)}
           >
-            Close
+            Yopish
           </button>
         </Dialog.Content>
       </Dialog.Portal>
@@ -143,7 +143,7 @@ export default function LibraryPage() {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="flex items-center"
         >
-          Title
+          Sarlavha
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="ml-2 h-4 w-4" />
           ) : column.getIsSorted() === "desc" ? (
@@ -161,7 +161,7 @@ export default function LibraryPage() {
             />
           ) : (
             <div className="bg-muted text-muted-foreground flex h-14 w-10 items-center justify-center rounded border text-xs">
-              No cover
+              Muqova yo&apos;q
             </div>
           )}
           <span>{row.original.title}</span>
@@ -175,7 +175,7 @@ export default function LibraryPage() {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="flex items-center"
         >
-          Author
+          Muallif
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="ml-2 h-4 w-4" />
           ) : column.getIsSorted() === "desc" ? (
@@ -191,7 +191,7 @@ export default function LibraryPage() {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="flex items-center"
         >
-          Rating
+          Baho
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="ml-2 h-4 w-4" />
           ) : column.getIsSorted() === "desc" ? (
@@ -202,7 +202,7 @@ export default function LibraryPage() {
     },
     {
       accessorKey: "shelves",
-      header: "Shelves",
+      header: "Javonlar",
       cell: ({ row }: { row: { original: BookRow } }) =>
         row.original.shelves.join(", "),
     },
@@ -213,7 +213,7 @@ export default function LibraryPage() {
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="flex items-center"
         >
-          Date Added
+          Qo&apos;shilgan sana
           {column.getIsSorted() === "asc" ? (
             <ArrowUp className="ml-2 h-4 w-4" />
           ) : column.getIsSorted() === "desc" ? (
@@ -239,15 +239,15 @@ export default function LibraryPage() {
               <DropdownMenuItem
                 onClick={() => setAddToShelfBookId(row.original.id)}
               >
-                Add to Shelf
+                Javonga qo&apos;shish
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setReviewBookId(row.original.id)}
               >
-                Add review
+                Fikr qo&apos;shish
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/book/${row.original.id}`}>Go to book page</Link>
+                <Link href={`/book/${row.original.id}`}>Kitob sahifasiga o&apos;tish</Link>
               </DropdownMenuItem>
               <DropdownMenuItem
                 variant="destructive"
@@ -340,15 +340,15 @@ export default function LibraryPage() {
       {/* Sidebar */}
       <aside className="bg-muted/40 w-64 border-r py-8 px-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold">Shelves</h2>
+          <h2 className="text-lg font-bold">Javonlar</h2>
           <Button size="sm" variant="secondary" onClick={() => setIsAddShelfModalOpen(true)}>
             <Plus className="h-4 w-4" />
           </Button>
         </div>
         {shelvesQuery.isLoading ? (
-          <div className="text-muted-foreground">Loading shelves...</div>
+          <div className="text-muted-foreground">Javonlar yuklanmoqda...</div>
         ) : shelves.length === 0 ? (
-          <div className="text-muted-foreground">No shelves yet.</div>
+          <div className="text-muted-foreground">Hali javonlar yo&apos;q.</div>
         ) : (
           <ul className="flex flex-col gap-2">
             <li>
@@ -356,7 +356,7 @@ export default function LibraryPage() {
                 className={`w-full rounded px-2 py-1 text-left ${!selectedShelf ? "bg-primary text-white" : "hover:bg-accent"}`}
                 onClick={() => setSelectedShelf(null)}
               >
-                All books
+                Barcha kitoblar
               </button>
             </li>
             {shelves.map((shelf) => (
@@ -381,7 +381,7 @@ export default function LibraryPage() {
                         setIsRenameDialogOpen(true);
                       }}
                     >
-                      Rename
+                      Qayta nomlash
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       variant="destructive"
@@ -390,7 +390,7 @@ export default function LibraryPage() {
                         setIsDeleteDialogOpen(true);
                       }}
                     >
-                      Delete
+                      O&apos;chirish
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -408,7 +408,7 @@ export default function LibraryPage() {
             <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
             <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg">
               <Dialog.Title className="mb-4 text-lg font-bold">
-                Rename Shelf
+                Javonni qayta nomlash
               </Dialog.Title>
               <Input
                 value={editingShelfName}
@@ -426,14 +426,14 @@ export default function LibraryPage() {
                   variant="outline"
                   onClick={() => setIsRenameDialogOpen(false)}
                 >
-                  Cancel
+                  Bekor qilish
                 </Button>
                 <Button
                   onClick={() =>
                     editingShelfId && handleRenameShelf(editingShelfId)
                   }
                 >
-                  Rename
+                  Qayta nomlash
                 </Button>
               </div>
             </Dialog.Content>
@@ -449,18 +449,17 @@ export default function LibraryPage() {
             <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
             <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg">
               <Dialog.Title className="mb-4 text-lg font-bold">
-                Delete Shelf
+                Javonni o&apos;chirish
               </Dialog.Title>
               <p className="text-muted-foreground mb-4">
-                Are you sure you want to delete this shelf? This will remove all
-                books from this shelf.
+                Bu javonni o&apos;chirishni xohlaysizmi? Bu javondagi barcha kitoblarni olib tashlaydi.
               </p>
               <div className="flex justify-end gap-2">
                 <Button
                   variant="outline"
                   onClick={() => setIsDeleteDialogOpen(false)}
                 >
-                  Cancel
+                  Bekor qilish
                 </Button>
                 <Button
                   variant="destructive"
@@ -468,7 +467,7 @@ export default function LibraryPage() {
                     shelfToDelete && handleDeleteShelf(shelfToDelete)
                   }
                 >
-                  Delete
+                  O&apos;chirish
                 </Button>
               </div>
             </Dialog.Content>
@@ -484,22 +483,22 @@ export default function LibraryPage() {
             <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
             <Dialog.Content className="fixed top-1/2 left-1/2 z-50 w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg">
               <Dialog.Title className="mb-4 text-lg font-bold">
-                Add New Shelf
+                Yangi javon qo&apos;shish
               </Dialog.Title>
               <Input
-                placeholder="Shelf Name"
+                placeholder="Javon nomi"
                 value={newShelfName}
                 onChange={(e) => setNewShelfName(e.target.value)}
               />
               <div className="mt-4">
-                <Button onClick={handleAddShelf}>Add</Button>
+                <Button onClick={handleAddShelf}>Qo&apos;shish</Button>
               </div>
             </Dialog.Content>
           </Dialog.Portal>
         </Dialog.Root>
       </aside>
       <main className="flex-1 p-8">
-        <h1 className="mb-4 text-2xl font-bold">My Library</h1>
+        <h1 className="mb-4 text-2xl font-bold">Mening kutubxonam</h1>
         {selectedRows.size > 0 && (
           <div className="bg-muted mb-4 flex items-center gap-4 rounded p-2 px-4">
             <button
@@ -508,25 +507,25 @@ export default function LibraryPage() {
             >
               ✕
             </button>
-            <span>{selectedRows.size} selected</span>
+            <span>{selectedRows.size} ta tanlangan</span>
             <button
               className="bg-primary rounded px-2 py-1 text-white"
               onClick={() => setBulkAddToShelfOpen(true)}
             >
-              Add {selectedRows.size} books to Shelf
+              {selectedRows.size} ta kitobni javonga qo&apos;shish
             </button>
             <button
               className="bg-destructive rounded px-2 py-1 text-white"
               onClick={handleBulkRemove}
             >
-              Remove from all Shelves
+              Barcha javonlardan olib tashlash
             </button>
           </div>
         )}
         {booksQuery.isLoading ? (
-          <div className="text-muted-foreground">Loading books...</div>
+          <div className="text-muted-foreground">Kitoblar yuklanmoqda...</div>
         ) : books.length === 0 ? (
-          <div className="text-muted-foreground">No books in this shelf.</div>
+          <div className="text-muted-foreground">Bu javonda kitoblar yo&apos;q.</div>
         ) : (
           <DataTable columns={columns} data={books} />
         )}

@@ -37,24 +37,24 @@ export default async function BookPage({
           <ShowMoreText className="text-muted-foreground text-md mb-6 font-light">
             <>
               <div className="mb-5">
-                {book.description ?? "No description."}
+                {book.description ?? "Tavsif yo'q."}
               </div>
               <dl className="grid grid-cols-[150px_1fr] gap-1">
                 <dt>ISBN</dt>
                 <dd>{book.isbn10 ?? "-"}</dd>
                 <dt>ISBN 13</dt>
                 <dd>{book.isbn13 ?? "-"}</dd>
-                <dt>Pages</dt>
+                <dt>Sahifalar</dt>
                 <dd>{book.pageCount ?? "-"}</dd>
-                <dt>Publisher</dt>
+                <dt>Nashriyot</dt>
                 <dd>{book.publisher ?? "-"}</dd>
-                <dt>Release date</dt>
+                <dt>Nashr sanasi</dt>
                 <dd>
                   {book.publicationDate
                     ? new Date(book.publicationDate).toLocaleDateString()
                     : "-"}
                 </dd>
-                <dt>Genres</dt>
+                <dt>Janrlar</dt>
                 <dd>{book.genres?.join(", ") ?? "-"}</dd>
               </dl>
             </>
@@ -72,13 +72,13 @@ export default async function BookPage({
               value="reviews"
               className="data-[state=active]:border-primary px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
             >
-              Reviews
+              Fikrlar
             </Tabs.Trigger>
             <Tabs.Trigger
               value="get"
               className="data-[state=active]:border-primary px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
             >
-              Get the book
+              Kitobni olish
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="reviews" className="py-4">
@@ -100,7 +100,7 @@ function BookCover({ src, alt, bookId }: { src: string | null; alt: string; book
         {src ? (
           <img src={src} alt={alt} className="h-full w-full object-cover" />
         ) : (
-          <span className="text-muted-foreground">No cover</span>
+          <span className="text-muted-foreground">Muqova yo&apos;q</span>
         )}
       </div>
       <SaveButton bookId={bookId} />

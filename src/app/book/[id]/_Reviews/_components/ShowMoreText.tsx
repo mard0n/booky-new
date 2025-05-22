@@ -35,7 +35,7 @@ export default function ShowMoreText({
           onClick={() => setExpanded(true)}
           type="button"
         >
-          Show more
+          Ko&apos;proq
         </button>
       ) : null}
     </div>

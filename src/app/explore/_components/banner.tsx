@@ -8,14 +8,14 @@ export default function Banner() {
             alt="Book collection"
             className="h-full w-full object-cover"
           />
-          <div className="from-black/75 absolute inset-0 flex items-center bg-gradient-to-r to-transparent">
+          <div className="absolute inset-0 flex items-center bg-gradient-to-r from-black/75 to-transparent">
             <div className="max-w-2xl p-8 md:p-12">
               <h1 className="mb-4 text-2xl font-bold text-white md:text-4xl">
-                Explore the world of books
+                Kitoblar olamini kashf qiling
               </h1>
               <p className="mb-6 text-sm text-white/90 md:text-lg">
-                Discover new releases, timeless classics, and hidden gems. Dive
-                into your next great read today!
+                Yangi nashrlarni, abadiy klassikalarni va yashirin durdonalarni
+                kashf eting. Bugun navbatdagi ajoyib o‘qishingizga sho‘ng‘ing!
               </p>
             </div>
           </div>

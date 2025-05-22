@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import { supabase } from "~/lib/supabaseClient";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Plus } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function SaveToShelvesModal({ bookId, open, onOpenChange }: { bookId: string; open: boolean; onOpenChange: (open: boolean) => void }) {
   const [supabaseUserId, setSupabaseUserId] = useState<string | null>(null);
@@ -55,8 +57,8 @@ export default function SaveToShelvesModal({ bookId, open, onOpenChange }: { boo
         <Dialog.Overlay className="fixed inset-0 bg-black/40 z-50" />
         <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow-lg">
           <div className="flex justify-between items-center mb-4">
-            <span className="font-bold">Save to</span>
-            <button onClick={() => onOpenChange(false)} className="text-sm">Done</button>
+            <span className="font-bold">Saqlash</span>
+            <Button variant="outline" onClick={() => onOpenChange(false)}>Tayyor</Button>
           </div>
           <div className="flex flex-col gap-2 mb-2">
             {shelves.map(shelf => (
@@ -74,11 +76,13 @@ export default function SaveToShelvesModal({ bookId, open, onOpenChange }: { boo
           <div className="flex gap-2 items-center mt-2">
             <input
               className="flex-1 border rounded px-2 py-1"
-              placeholder="Create shelf"
+              placeholder="Javon yaratish"
               value={newShelfName}
               onChange={e => setNewShelfName(e.target.value)}
             />
-            <button onClick={handleCreateShelf} className="px-2 py-1 rounded bg-primary text-white">+</button>
+            <Button variant="default" onClick={handleCreateShelf}>
+              <Plus />
+            </Button>
           </div>
         </Dialog.Content>
       </Dialog.Portal>

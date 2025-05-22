@@ -27,7 +27,7 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
   console.log('user', user);
   return user ? (
     <>
-      <Link href="/library">Library</Link>
+      <Link href="/library">Mening Kutubxonam</Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="border-input h-8 w-8 border-2">
@@ -43,14 +43,14 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem> */}
           <DropdownMenuItem asChild>
-            <Link href="/settings">Account settings</Link>
+            <Link href="/settings">Hisobni sozlash</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="text-red-600 focus:text-red-600"
             onClick={() => signOut()}
           >
-            Log out
+            Chiqish
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -58,10 +58,10 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
   ) : (
     <div className="flex gap-8">
       <button>
-        <Link href="/sign-in">Sign in</Link>
+        <Link href="/sign-in">Kirish</Link>
       </button>
       <button>
-        <Link href="/sign-up">Sign up</Link>
+        <Link href="/sign-up">Ro&apos;yxatdan otish</Link>
       </button>
     </div>
   );
