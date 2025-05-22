@@ -4,6 +4,7 @@ import { api } from "~/trpc/react";
 import { supabase } from "~/lib/supabaseClient";
 import SaveToShelvesModal from "./SaveToShelvesModal";
 import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function SaveButton({ bookId }: { bookId: string }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,14 +42,14 @@ export default function SaveButton({ bookId }: { bookId: string }) {
 
   return (
     <>
-      <button
-        className={`mt-2 w-full rounded px-3 py-1 text-white flex items-center justify-center gap-2 disabled:opacity-60 ${isSaved ? "bg-green-600" : "bg-primary"}`}
+      <Button
+        className={`mt-2 w-full rounded px-3 py-2 text-white flex items-center justify-center gap-2 disabled:opacity-60 ${isSaved ? "bg-green-600" : "bg-primary"}`}
         onClick={handleClick}
         aria-label={isSaved ? "Book is saved in your library" : "Save book to your library"}
       >
         {isSaved ? <BookmarkCheck className="w-5 h-5" /> : <Bookmark className="w-5 h-5" />}
         {isSaved ? "Saved" : "Save"}
-      </button>
+      </Button>
       <SaveToShelvesModal
         bookId={bookId}
         open={modalOpen}

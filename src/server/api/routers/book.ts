@@ -327,4 +327,90 @@ export const bookRouter = createTRPCRouter({
       [shelf] = await ctx.db.insert(shelves).values({ userId: user.id, name: input.name }).returning();
       return { shelf };
     }),
+  getUserShelves: publicProcedure
+    .input(z.object({ supabaseUserId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      const shelves = await ctx.db.query.shelves.findMany({
+        where: (shelves, { eq }) => eq(shelves.userId, user.id),
+      });
+      return { shelves };
+    }),
+  getBooksInLibrary: publicProcedure
+    .input(z.object({ supabaseUserId: z.string(), shelfId: z.string().uuid().optional() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      // Get all bookEntries for user (optionally filter by shelf)
+      const bookEntries = await ctx.db.query.bookEntries.findMany({
+        where: (bookEntries, { eq, and }) =>
+          input.shelfId
+            ? and(eq(bookEntries.userId, user.id), eq(bookEntries.shelfId, input.shelfId))
+            : eq(bookEntries.userId, user.id),
+        with: {
+          book: true,
+          shelf: true,
+        },
+      });
+      // Group by book, collect shelves and date added
+      const bookMap = new Map();
+      for (const entry of bookEntries) {
+        if (!entry.book) continue;
+        if (!bookMap.has(entry.book.id)) {
+          bookMap.set(entry.book.id, {
+            ...entry.book,
+            shelves: [],
+            addedAt: entry.addedAt,
+          });
+        }
+        const b = bookMap.get(entry.book.id);
+        b.shelves.push(entry.shelf?.name ?? "");
+        // Use earliest addedAt if multiple
+        if (entry.addedAt < b.addedAt) b.addedAt = entry.addedAt;
+      }
+      return { books: Array.from(bookMap.values()) };
+    }),
+  renameShelf: publicProcedure
+    .input(z.object({
+      supabaseUserId: z.string(),
+      shelfId: z.string().uuid(),
+      newName: z.string().min(1),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+      const [updatedShelf] = await ctx.db.update(shelves)
+        .set({ name: input.newName })
+        .where(eq(shelves.id, input.shelfId))
+        .returning();
+      return updatedShelf;
+    }),
+  deleteShelf: publicProcedure
+    .input(z.object({
+      supabaseUserId: z.string(),
+      shelfId: z.string().uuid(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.supabaseUserId, input.supabaseUserId),
+      });
+      if (!user) throw new Error("Not authenticated");
+
+      // First delete all book entries associated with this shelf
+      await ctx.db.delete(bookEntries)
+        .where(eq(bookEntries.shelfId, input.shelfId));
+
+      // Then delete the shelf itself
+      await ctx.db.delete(shelves)
+        .where(eq(shelves.id, input.shelfId));
+
+      return { success: true };
+    }),
 }); 

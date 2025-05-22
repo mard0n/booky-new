@@ -19,7 +19,7 @@ interface AuthButtonProps {
 export function AuthButton({ user, signOut }: AuthButtonProps) {
   return user ? (
     <>
-      <Link href="/my-library">Library</Link>
+      <Link href="/library">Library</Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="h-8 w-8 cursor-pointer">
