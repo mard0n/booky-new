@@ -15,7 +15,6 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({ sellerId }) => {
   const { data: books } = api.book.getBooksBySellerId.useQuery({
     id: sellerId,
   });
-  console.log('books', books);
   
   if (!books?.length) {
     return (

@@ -6,7 +6,6 @@ import Catalogue from "./_Catalogue/Catalogue";
 export default async function Seller({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const seller = await api.seller.getSellerById({ id });
-  console.log("seller", seller);
   if (!seller) return notFound();
 
   return (

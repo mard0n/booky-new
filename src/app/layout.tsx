@@ -7,6 +7,7 @@ import { Libre_Baskerville } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import Navbar from "~/components/navbar";
 import { ThemeDetector } from "~/components/theme-detector";
+import Footer from "~/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <ThemeDetector />
           <Navbar />
           {children}
+          <Footer />
         </TRPCReactProvider>
       </body>
     </html>

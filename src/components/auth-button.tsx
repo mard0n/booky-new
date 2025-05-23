@@ -18,13 +18,10 @@ interface AuthButtonProps {
 }
 
 export function AuthButton({ authUser, signOut }: AuthButtonProps) {
-  console.log("authUser", authUser);
-
   const { data: user } = api.user.getUserBySupabaseId.useQuery(
     { id: authUser?.id ?? "" },
     { enabled: !!authUser?.id },
   );
-  console.log("user", user);
   return user ? (
     <>
       <Link href="/library" className="mr-8">Mening Kutubxonam</Link>
