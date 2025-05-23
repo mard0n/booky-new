@@ -1,6 +1,5 @@
 import { api, HydrateClient } from "~/trpc/server";
 import Footer from "../components/Footer";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
@@ -33,10 +32,11 @@ export default async function Home() {
     <HydrateClient>
       <main className="flex flex-col">
         <section className="flex flex-col items-center justify-center py-20">
-          <h1 className="mb-25 pb-2 text-center font-serif text-5xl font-semibold tracking-tighter">
-            Yangi kitoblarni kashf eting, <br />muhokama qiling va ularni <br /> atrofingizdagi joylardan oling
+          <h1 className="pb-4 text-center font-libre text-5xl">
+            Kitoblar olamiga qadam qo&apos;ying
           </h1>
-          <div className="grid w-full max-w-5xl grid-cols-4 justify-center pb-[400px]">
+          <p className="text-center text-[21px] font-extralight text-muted-foreground mb-25">Izlang, fikr-mulohazalarni kuzating va yaqin kutubxona / do&apos;konlardan sotib oling</p>
+          <div className="grid w-full max-w-5xl grid-cols-4 justify-center pb-[450px]">
             {bookPositions.map((position, index) => (
               <div key={books[index]?.id} className="relative">
                 <div
@@ -61,37 +61,24 @@ export default async function Home() {
             ))}
           </div>
         </section>
-        <section className="bg-muted flex flex-col items-center py-16">
-          <h1 className="mb-10 pb-2 text-center font-serif text-5xl font-semibold tracking-tighter">
-            Bizning faoliyatimiz kengaymoqda
+        <section className="flex flex-col items-center pt-16 pb-32">
+          <h1 className="mb-14 pb-2 text-center font-libre text-5xl">
+            Bizning faoliyatimiz <br /> kengaymoqda
           </h1>
-          <div className="grid grid-cols-2 container mx-auto max-w-5xl">
-            <div className="relative row-span-2 bg-card aspect-square w-full h-full">
-              <span className="absolute">3 shaxar</span>
+          <div className="grid grid-cols-2 gap-10 container mx-auto max-w-5xl">
+            <div className="relative bg-muted row-span-2 aspect-square w-full h-[500px]">
+              <img src="/newcities.png" alt="" className="w-full h-full object-cover" />
+              <span className="absolute text-md bottom-[16px] right-[16px] uppercase font-bold">3 ta shaxar</span>
             </div>
-            <div className="flex flex-col items-center gap-3">
-              <div className="bg-card flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl border">
-                <Image
-                  src="/1614898058-library-academic.svg"
-                  alt="libraries"
-                  width={80}
-                  height={80}
-                />
-              </div>
-              <span className="text-center font-semibold">
-                150+ kutubxona
-                <br />
-                va kitob do&apos;konlari
+            <div className="relative bg-muted aspect-square w-full h-[240px]">
+              <img src="/weboflibs.png" alt="" className="absolute bottom-0 left-0 w-full object-contain" />
+              <span className="absolute text-md top-[16px] left-[16px] uppercase font-bold ">
+                150+ kutubxona va kitob do&apos;konlari
               </span>
             </div>
-            <div className="flex flex-col items-center gap-3">
-              <div className="bg-card flex h-20 w-20 items-center justify-center rounded-xl border">
-                {/* Book illustration placeholder */}
-                <span role="img" aria-label="books" className="text-3xl">
-                  📚
-                </span>
-              </div>
-              <span className="font-semibold">150,000 kitoblar</span>
+            <div className="relative bg-muted aspect-square w-full h-[220px]">
+            <img src="/books.png" alt="" className="absolute bottom-0 left-0 w-full object-contain" />
+              <span className="absolute text-md bottom-[16px] left-1/2 -translate-x-1/2 uppercase font-bold">15,000+ kitoblar</span>
             </div>
           </div>
         </section>

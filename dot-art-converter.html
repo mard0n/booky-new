@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Dot Art Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+        }
+        
+        .file-input-wrapper:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        label {
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        input[type="range"], input[type="number"], select {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            border-radius: 3px;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .canvas-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .canvas-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .canvas-wrapper h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        canvas {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background: white;
+        }
+        
+        .download-btn {
+            margin-top: 20px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+        
+        .download-btn:hover {
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .canvas-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Dot Art Converter</h1>
+        
+        <div class="upload-section">
+            <div class="file-input-wrapper">
+                <input type="file" id="imageInput" accept="image/*">
+                <span>📁 Choose an image file</span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="dotSize">Dot Size</label>
+                <input type="range" id="dotSize" min="1" max="8" value="3">
+                <span id="dotSizeValue">3px</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="dotSpacing">Dot Spacing</label>
+                <input type="range" id="dotSpacing" min="2" max="12" value="5">
+                <span id="dotSpacingValue">5px</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="threshold">Brightness Threshold</label>
+                <input type="range" id="threshold" min="0" max="255" value="128">
+                <span id="thresholdValue">128</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="contrast">Contrast</label>
+                <input type="range" id="contrast" min="0.5" max="3" step="0.1" value="1">
+                <span id="contrastValue">1.0</span>
+            </div>
+            
+            <div class="control-group">
+                <label for="outputWidth">Output Width</label>
+                <input type="number" id="outputWidth" min="100" max="2000" value="800">
+            </div>
+            
+            <div class="control-group">
+                <button onclick="convertToDotArt()">Generate Dot Art</button>
+            </div>
+        </div>
+        
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <h3>Original Image</h3>
+                <canvas id="originalCanvas"></canvas>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <h3>Dot Art Result</h3>
+                <canvas id="dotCanvas"></canvas>
+                <button class="download-btn" onclick="downloadDotArt()">Download Dot Art</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DotArtConverter {
+            constructor() {
+                this.originalCanvas = document.getElementById('originalCanvas');
+                this.dotCanvas = document.getElementById('dotCanvas');
+                this.originalCtx = this.originalCanvas.getContext('2d');
+                this.dotCtx = this.dotCanvas.getContext('2d');
+                this.setupEventListeners();
+            }
+
+            setupEventListeners() {
+                const imageInput = document.getElementById('imageInput');
+                imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+
+                // Update value displays
+                ['dotSize', 'dotSpacing', 'threshold', 'contrast'].forEach(id => {
+                    const input = document.getElementById(id);
+                    const valueSpan = document.getElementById(`${id}Value`);
+                    
+                    input.addEventListener('input', () => {
+                        let value = input.value;
+                        if (id === 'dotSize' || id === 'dotSpacing') {
+                            value += 'px';
+                        } else if (id === 'contrast') {
+                            value = parseFloat(value).toFixed(1);
+                        }
+                        valueSpan.textContent = value;
+                    });
+                });
+            }
+
+            handleImageUpload(event) {
+                const input = event.target;
+                const file = input.files && input.files[0];
+                
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => this.drawOriginalImage(img);
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            drawOriginalImage(img) {
+                const maxWidth = 400;
+                const scale = Math.min(maxWidth / img.width, maxWidth / img.height);
+                const width = img.width * scale;
+                const height = img.height * scale;
+
+                this.originalCanvas.width = width;
+                this.originalCanvas.height = height;
+
+                this.originalCtx.drawImage(img, 0, 0, width, height);
+            }
+
+            convertToDotArt() {
+                if (!this.originalCanvas.width) {
+                    alert('Please upload an image first!');
+                    return;
+                }
+
+                const config = this.getConfig();
+                this.generateDotArt(config);
+            }
+
+            getConfig() {
+                return {
+                    dotSize: parseInt(document.getElementById('dotSize').value),
+                    dotSpacing: parseInt(document.getElementById('dotSpacing').value),
+                    threshold: parseInt(document.getElementById('threshold').value),
+                    contrast: parseFloat(document.getElementById('contrast').value),
+                    outputWidth: parseInt(document.getElementById('outputWidth').value)
+                };
+            }
+
+            generateDotArt(config) {
+                // Get original image data
+                const originalImageData = this.originalCtx.getImageData(0, 0, this.originalCanvas.width, this.originalCanvas.height);
+                
+                // Calculate output dimensions
+                const aspectRatio = this.originalCanvas.height / this.originalCanvas.width;
+                const outputHeight = config.outputWidth * aspectRatio;
+                
+                // Set dot canvas size
+                this.dotCanvas.width = config.outputWidth;
+                this.dotCanvas.height = outputHeight;
+                
+                // Clear canvas with white background
+                this.dotCtx.fillStyle = 'white';
+                this.dotCtx.fillRect(0, 0, config.outputWidth, outputHeight);
+                
+                // Calculate sampling
+                const scaleX = this.originalCanvas.width / config.outputWidth;
+                const scaleY = this.originalCanvas.height / outputHeight;
+                
+                for (let y = 0; y < outputHeight; y += config.dotSpacing) {
+                    for (let x = 0; x < config.outputWidth; x += config.dotSpacing) {
+                        // Sample original image
+                        const sourceX = Math.floor(x * scaleX);
+                        const sourceY = Math.floor(y * scaleY);
+                        
+                        if (sourceX >= this.originalCanvas.width || sourceY >= this.originalCanvas.height) continue;
+                        
+                        const pixelIndex = (sourceY * this.originalCanvas.width + sourceX) * 4;
+                        const r = originalImageData.data[pixelIndex];
+                        const g = originalImageData.data[pixelIndex + 1];
+                        const b = originalImageData.data[pixelIndex + 2];
+                        
+                        // Calculate brightness
+                        let brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+                        
+                        // Apply contrast
+                        brightness = ((brightness - 128) * config.contrast) + 128;
+                        brightness = Math.max(0, Math.min(255, brightness));
+                        
+                        // Check if pixel should be a dot
+                        if (brightness < config.threshold) {
+                            this.dotCtx.fillStyle = 'black';
+                            this.dotCtx.beginPath();
+                            this.dotCtx.arc(x, y, config.dotSize / 2, 0, Math.PI * 2);
+                            this.dotCtx.fill();
+                        }
+                    }
+                }
+            }
+
+            downloadDotArt() {
+                if (!this.dotCanvas.width) {
+                    alert('Please generate dot art first!');
+                    return;
+                }
+
+                const link = document.createElement('a');
+                link.download = 'dot-art.png';
+                link.href = this.dotCanvas.toDataURL();
+                link.click();
+            }
+        }
+
+        // Initialize the converter
+        const converter = new DotArtConverter();
+
+        // Global functions for buttons
+        function convertToDotArt() {
+            converter.convertToDotArt();
+        }
+
+        function downloadDotArt() {
+            converter.downloadDotArt();
+        }
+    </script>
+</body>
+</html>

@@ -87,7 +87,7 @@ export default function Search() {
         ref={inputRef}
         type="text"
         placeholder="Kitob izlang..."
-        className="w-full rounded p-2 focus:outline-none focus:ring-0 pl-11 border-none "
+        className="w-full rounded p-2 focus:outline-none focus:ring-0 pl-10 border-none "
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -95,7 +95,7 @@ export default function Search() {
         }}
         onKeyDown={handleKeyDown}
       />
-      <SearchIcon className="absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground" />
+      <SearchIcon className="absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground h-5 w-5" />
       {showSuggestions && (query || isLoading) && (
         <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700 max-h-96 overflow-y-auto">
           {isLoading ? (

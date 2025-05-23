@@ -18,23 +18,25 @@ interface AuthButtonProps {
 }
 
 export function AuthButton({ authUser, signOut }: AuthButtonProps) {
-  console.log('authUser', authUser);
-  
+  console.log("authUser", authUser);
+
   const { data: user } = api.user.getUserBySupabaseId.useQuery(
     { id: authUser?.id ?? "" },
-    { enabled: !!authUser?.id }
+    { enabled: !!authUser?.id },
   );
-  console.log('user', user);
+  console.log("user", user);
   return user ? (
     <>
-      <Link href="/library">Mening Kutubxonam</Link>
+      <Link href="/library" className="mr-8">Mening Kutubxonam</Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="border-input h-8 w-8 border-2">
+          <Avatar className="border-input h-8 w-8 border-2 mr-8">
             {user.avatarUrl ? (
               <AvatarImage src={user.avatarUrl} alt="Profile photo preview" />
             ) : (
-              <AvatarFallback>{user.name?.at(0) ?? user.email?.at(0)}</AvatarFallback>
+              <AvatarFallback>
+                {user.name?.at(0) ?? user.email?.at(0)}
+              </AvatarFallback>
             )}
           </Avatar>
         </DropdownMenuTrigger>
@@ -56,13 +58,13 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
       </DropdownMenu>
     </>
   ) : (
-    <div className="flex gap-8">
-      <button>
-        <Link href="/sign-in">Kirish</Link>
-      </button>
-      <button>
-        <Link href="/sign-up">Ro&apos;yxatdan otish</Link>
-      </button>
+    <div className="flex h-full">
+      <Link className="flex items-center justify-center px-8 -ml-8" href="/sign-in">
+        Kirish
+      </Link>
+      <Link className="flex items-center justify-center bg-primary h-full px-8 text-white" href="/sign-up">
+        Ro&apos;yxatdan otish
+      </Link>
     </div>
   );
 }

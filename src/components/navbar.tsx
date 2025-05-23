@@ -4,10 +4,10 @@ import { signOutAction } from "~/app/actions";
 import { AuthButton } from "./auth-button";
 import Search from "./Search";
 
-function Logo() {
+export function Logo() {
   return (
     <Link className="text-2xl" href="/">
-      Booky
+      <img src="/booky.svg" alt="booky" className="h-8" />
     </Link>
   );
 }
@@ -18,7 +18,7 @@ function Explore() {
 
 function Divider() {
   return (
-    <div className="inline-block h-full min-h-[1em] w-[1px] self-stretch border-r" />
+    <div className="block h-full w-[1px] self-stretch border-r mx-8 " />
   );
 }
 
@@ -29,8 +29,10 @@ export default async function Navbar() {
   } = await supabase.auth.getUser()
 
   return (
-    <div className="flex h-20 items-center justify-between gap-8 px-8 border-b">
+    <div className="flex h-20 items-center justify-between border-b">
+      <div className="ml-8">
       <Logo />
+      </div>
       <Divider />
       <Search />
       <Divider />
