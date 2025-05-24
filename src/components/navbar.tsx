@@ -7,7 +7,7 @@ import Search from "./Search";
 export function Logo() {
   return (
     <Link className="text-2xl" href="/">
-      <img src="/booky.svg" alt="booky" className="h-8" />
+      <img src="/Booky.svg" alt="Booky" className="h-8" />
     </Link>
   );
 }
