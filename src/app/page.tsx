@@ -68,17 +68,17 @@ export default async function Home() {
           <div className="grid grid-cols-2 gap-10 container mx-auto max-w-5xl">
             <div className="relative bg-muted row-span-2 aspect-square w-full h-[500px]">
               <img src="/newcities.png" alt="" className="w-full h-full object-cover" />
-              <span className="absolute text-md bottom-[16px] right-[16px] uppercase font-bold">3 ta shaxar</span>
+              <h4 className="absolute text-lg bottom-[16px] right-[16px] uppercase font-semibold">3 ta shaxar</h4>
             </div>
             <div className="relative bg-muted aspect-square w-full h-[240px]">
               <img src="/weboflibs.png" alt="" className="absolute bottom-0 left-0 w-full object-contain" />
-              <span className="absolute text-md top-[16px] left-[16px] uppercase font-bold ">
+              <h4 className="absolute text-lg top-[16px] left-[16px] uppercase font-semibold">
                 150+ kutubxona va kitob do&apos;konlari
-              </span>
+              </h4>
             </div>
             <div className="relative bg-muted aspect-square w-full h-[220px]">
             <img src="/books.png" alt="" className="absolute bottom-0 left-0 w-full object-contain" />
-              <span className="absolute text-md bottom-[16px] left-1/2 -translate-x-1/2 uppercase font-bold">15,000+ kitoblar</span>
+              <h4 className="absolute text-lg bottom-[16px] left-1/2 -translate-x-1/2 uppercase font-semibold">15,000+ kitoblar</h4>
             </div>
           </div>
         </section>
