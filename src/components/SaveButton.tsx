@@ -47,7 +47,8 @@ export default function SaveButton({ bookId }: { bookId: string }) {
   return (
     <>
       <Button
-        className={`mt-2 flex w-full items-center justify-center gap-2 rounded px-3 py-2 text-white disabled:opacity-60 ${isSaved ? "bg-green-600" : "bg-primary"}`}
+        size="lg"
+        className={`mt-2 w-full ${isSaved ? "bg-success" : "bg-primary"}`}
         onClick={handleClick}
         aria-label={
           isSaved
@@ -60,7 +61,7 @@ export default function SaveButton({ bookId }: { bookId: string }) {
         ) : (
           <Bookmark className="h-5 w-5" />
         )}
-        {isSaved ? "Saqlandi" : "Saqlash"}
+        {isSaved ? "Saqlangan" : "Saqlash"}
       </Button>
       <SaveToShelvesModal
         bookId={bookId}

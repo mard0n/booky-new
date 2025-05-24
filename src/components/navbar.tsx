@@ -13,7 +13,7 @@ export function Logo() {
 }
 
 function Explore() {
-  return <Link href="/explore">Tanishish</Link>;
+  return <Link className="hover:opacity-80" href="/explore">Tanishish</Link>;
 }
 
 function Divider() {

@@ -1,5 +1,4 @@
 import React from "react";
-import type { Book } from "~/server/db/schema";
 
 interface RatingProps {
   rating: number;
@@ -31,7 +30,7 @@ const Rating: React.FunctionComponent<RatingProps> = ({
             ★
           </span>
         ))}
-        {showNumber ? <span className="ml-3">{rating}</span> : null}
+        {showNumber ? <span className="ml-3 font-libre">{rating}</span> : null}
       </div>
       {/* {showDetails ? (
         <div>

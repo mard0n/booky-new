@@ -31,7 +31,7 @@ export default function ShowMoreText({
       {children}
       {!expanded ? (
         <button
-          className="text-muted-foreground absolute right-0 bottom-0 cursor-pointer bg-gradient-to-l from-white from-60% to-transparent pl-20 underline"
+          className="text-gray-400 absolute right-0 bottom-0 cursor-pointer bg-gradient-to-l from-white from-60% to-transparent pl-14 underline"
           onClick={() => setExpanded(true)}
           type="button"
         >

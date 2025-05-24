@@ -3,9 +3,20 @@ import React, { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "~/components/ui/button";
 import type { User } from "~/server/db/schema";
-import { api } from '~/trpc/react';
+import { api } from "~/trpc/react";
 import Link from "next/link";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "~/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
+import { Input } from "~/components/ui/input";
 
 interface ReviewFormProps {
   bookId: string;
@@ -27,6 +38,7 @@ const StarSelector = ({
   value: number;
   onChange: (v: number) => void;
 }) => {
+  const [hoverValue, setHoverValue] = useState(0);
   return (
     <div className="mb-2 flex items-center gap-1 text-2xl">
       {[1, 2, 3, 4, 5].map((n) => (
@@ -35,11 +47,13 @@ const StarSelector = ({
           type="button"
           aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
           className={
-            n <= value
+            n <= (hoverValue || value)
               ? "text-yellow-400"
               : "text-muted-foreground transition-colors hover:text-yellow-400"
           }
           onClick={() => onChange(n)}
+          onMouseEnter={() => setHoverValue(n)}
+          onMouseLeave={() => setHoverValue(0)}
         >
           ★
         </button>
@@ -68,7 +82,7 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
   const createReviewMutation = api.book.createReview.useMutation({
     onSuccess: async () => {
       onOpenChange(false);
-      cleanUp()
+      cleanUp();
       await utils.book.getReviewsByBookId.invalidate({ id: bookId });
       await utils.book.getReviewsByBookId.refetch({ id: bookId });
     },
@@ -76,7 +90,7 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
   const updateReviewMutation = api.book.updateReview.useMutation({
     onSuccess: async () => {
       onOpenChange(false);
-      cleanUp()
+      cleanUp();
       await utils.book.getReviewsByBookId.invalidate({ id: bookId });
       await utils.book.getReviewsByBookId.refetch({ id: bookId });
     },
@@ -84,7 +98,7 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
   const deleteReviewMutation = api.book.deleteReview.useMutation({
     onSuccess: async () => {
       onOpenChange(false);
-      cleanUp()
+      cleanUp();
       await utils.book.getReviewsByBookId.invalidate({ id: bookId });
       await utils.book.getReviewsByBookId.refetch({ id: bookId });
     },
@@ -99,21 +113,21 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
   }, [review]);
 
   const cleanUp = () => {
-    setRating(0)
-    setTitle("")
-    setReviewText("")
-  }
+    setRating(0);
+    setTitle("");
+    setReviewText("");
+  };
 
   const handleDelete = async () => {
     if (!review?.id) return;
-    
+
     try {
       await deleteReviewMutation.mutateAsync({
         reviewId: review.id,
       });
-      console.log('Review deleted successfully!');
+      console.log("Review deleted successfully!");
     } catch (error) {
-      console.error('Error deleting review:', error);
+      console.error("Error deleting review:", error);
     }
   };
 
@@ -121,14 +135,15 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
     return (
       <Dialog.Root open={open} onOpenChange={onOpenChange}>
         <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 review-modal-overlay" />
-          <Dialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none review-modal-content">
+          <Dialog.Overlay className="review-modal-overlay fixed inset-0 z-40 bg-black/40" />
+          <Dialog.Content className="bg-background review-modal-content fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none">
             <Dialog.Title className="mb-4 text-center text-xl font-semibold">
               Fikr bildirish uchun tizimga kiring
             </Dialog.Title>
             <div className="flex flex-col items-center gap-4 text-center">
               <p className="text-muted-foreground">
-                Iltimos, bu kitob haqida fikringizni bildirish uchun tizimga kiring yoki akkaunt yarating.
+                Iltimos, bu kitob haqida fikringizni bildirish uchun tizimga
+                kiring yoki akkaunt yarating.
               </p>
               <div className="flex gap-4">
                 <Link href="/sign-in">
@@ -166,7 +181,7 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
           title: title,
           content: reviewText,
         });
-        console.log('Review updated successfully!');
+        console.log("Review updated successfully!");
       } else {
         await createReviewMutation.mutateAsync({
           bookId: bookId,
@@ -175,12 +190,12 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
           content: reviewText,
           userId: user.id,
         });
-        console.log('Review created successfully!');
+        console.log("Review created successfully!");
       }
 
       onOpenChange(false);
     } catch (error) {
-      console.error('Error submitting review:', error);
+      console.error("Error submitting review:", error);
     } finally {
       setSubmitting(false);
     }
@@ -189,41 +204,52 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 review-modal-overlay" />
-        <Dialog.Content className="bg-background fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none review-modal-content">
+        <Dialog.Overlay className="review-modal-overlay fixed inset-0 z-40 bg-black/40" />
+        <Dialog.Content className="bg-background review-modal-content fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg p-8 shadow-lg focus:outline-none">
           <Dialog.Title className="mb-4 text-center text-xl font-semibold">
             {review?.id ? "Fikringizni tahrirlash" : `Fikr bildirish`}
           </Dialog.Title>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <StarSelector value={rating} onChange={setRating} />
-            <input
+            <Input
               type="text"
               placeholder="Fikr sarlavhasi (ixtiyoriy)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] placeholder:text-muted-foreground"
+              className="focus-visible:border-ring focus-visible:ring-ring/50 placeholder:text-muted-foreground w-full rounded-none border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:ring-[3px]"
             />
             <textarea
               rows={5}
               placeholder="Kitob haqida nima fikrdasiz?"
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
-              className="resize-none w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] placeholder:text-muted-foreground"
+              className="focus-visible:border-ring focus-visible:ring-ring/50 placeholder:text-muted-foreground w-full resize-none rounded-none border bg-transparent px-3 py-2 text-base shadow-xs focus-visible:ring-[3px]"
               required
             />
             <div className="flex gap-2">
               <Button
                 type="submit"
+                size="lg"
                 disabled={submitting || rating === 0}
                 className="mt-2 flex-1"
               >
-                {submitting ? (review?.id ? "Saqlanmoqda..." : "Yuborilmoqda...") : review?.id ? "O'zgarishlarni saqlash" : "Fikrni yuborish"}
+                {submitting
+                  ? review?.id
+                    ? "Saqlanmoqda..."
+                    : "Yuborilmoqda..."
+                  : review?.id
+                    ? "O'zgarishlarni saqlash"
+                    : "Fikrni yuborish"}
               </Button>
               {review?.id && (
-                <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <AlertDialog
+                  open={deleteDialogOpen}
+                  onOpenChange={setDeleteDialogOpen}
+                >
                   <AlertDialogTrigger asChild>
                     <Button
                       type="button"
+                      size="lg"
                       variant="destructive"
                       className="mt-2"
                       disabled={submitting}
@@ -235,7 +261,8 @@ const ReviewForm: React.FunctionComponent<ReviewFormProps> = ({
                     <AlertDialogHeader>
                       <AlertDialogTitle>Ishonchingiz komilmi?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Bu amalni qaytarib bo&apos;lmaydi. Bu sizning fikringizni butunlay o&apos;chirib tashlaydi.
+                        Bu amalni qaytarib bo&apos;lmaydi. Bu sizning
+                        fikringizni butunlay o&apos;chirib tashlaydi.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

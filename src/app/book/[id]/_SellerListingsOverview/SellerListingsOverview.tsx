@@ -21,7 +21,7 @@ const SellerListingsOverview: React.FunctionComponent<
 
   return (
     <div className="flex min-w-xs flex-col gap-4 rounded-2xl border p-4">
-      <h1 className="text-lg">Kitob bor joylar ({sellerListings.length})</h1>
+      <h1 className="text-lg font-semibold">Kitob bor joylar ({sellerListings.length})</h1>
       <ul className="flex flex-col gap-2">
         {sellerListings.map((sellerListing, i) => {
           if (i >= 5) {

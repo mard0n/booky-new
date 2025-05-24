@@ -25,6 +25,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-success: var(--success);
 
   --color-border: var(--border);
   --color-input: var(--input);
@@ -50,6 +51,7 @@
   --accent: oklch(0.967 0.003 264.542);
   --accent-foreground: oklch(0.21 0.034 264.665);
   --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.69 0.06 157.47);
 
   --border: oklch(0.928 0.006 264.531);
   --input: oklch(0.928 0.006 264.531);
@@ -72,6 +74,7 @@
   --accent: oklch(0.278 0.033 256.848);
   --accent-foreground: oklch(0.985 0.002 247.839);
   --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.69 0.06 157.47);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.6167 0.0134 264.364);
@@ -84,8 +87,17 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-poppins;
+  }
 }
 
 @theme {
   --font-libre: var(--font-libre-baskerville);
+  --font-poppins: var(--font-poppins);
 }

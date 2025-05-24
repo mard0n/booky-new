@@ -1,7 +1,7 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Poppins } from "next/font/google";
 import { Libre_Baskerville } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
@@ -20,6 +20,12 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
+});
+
 const libreBaskerville = Libre_Baskerville({
   weight: ["400", "700"],
   subsets: ["latin"],
@@ -30,7 +36,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${libreBaskerville.variable}`}>
+    <html lang="en" className={`${poppins.variable} ${geist.variable} ${libreBaskerville.variable}`}>
       <body>
         <TRPCReactProvider>
           <ThemeDetector />

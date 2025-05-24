@@ -25,11 +25,11 @@ const ReviewBlock: React.FunctionComponent<ReviewBlockProps> = ({
           />
           <AvatarFallback>{reviewer.name?.at(0)}</AvatarFallback>
         </Avatar>
-        <div className="">{reviewer.name ?? reviewer.email}</div>
+        <div className="text-sm">{reviewer.name ?? reviewer.email}</div>
       </div>
       <div className="mb-2 flex items-center gap-4">
         <Rating rating={review.rating} size="md" />
-        <span className="text-xl font-bold">{review.title}</span>
+        <h3 className="text-xl font-medium">{review.title}</h3>
       </div>
       <div className="mb-2 text-sm text-gray-400">
         {new Date(review.createdAt).toLocaleDateString(undefined, {

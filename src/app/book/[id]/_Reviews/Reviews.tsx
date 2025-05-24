@@ -15,7 +15,7 @@ interface ReviewsProps {
 }
 
 const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
-  const { data: reviews } = api.book.getReviewsByBookId.useQuery({
+  const { data: reviews, isLoading } = api.book.getReviewsByBookId.useQuery({
     id: bookId,
   });  
 
@@ -40,11 +40,19 @@ const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
 
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
 
+  if (isLoading) {
+    return (
+      <div className="text-muted-foreground">
+        Fikrlar yuklanmoqda...
+      </div>
+    );
+  }
+
   if (!reviews?.length) {
     return (
       <>
         <div className="mb-4 flex justify-between">
-          <h2 className="mb-4 text-2xl font-bold">Baholar va fikrlar</h2>
+          <h2 className="mb-4 text-2xl tracking-wide font-semibold">Baholar va fikrlar</h2>
           <Button onClick={() => setIsReviewFormOpen(true)}>
             + Fikr bildirish
           </Button>
@@ -71,15 +79,17 @@ const Reviews: React.FunctionComponent<ReviewsProps> = ({ bookId }) => {
       <div className="mb-8 flex flex-col gap-10">
         {userReview && (
           <div>
-            <h2 className="mb-4 text-2xl font-bold">Sizning fikringiz</h2>
+            <h2 className="mb-4 text-2xl tracking-wide font-semibold">Sizning fikringiz</h2>
             <ReviewBlock review={userReview} reviewer={userReview.user} />
-            <Button onClick={() => setIsReviewFormOpen(true)}>Tahrirlash</Button>
+            <div className="mt-6">
+              <Button onClick={() => setIsReviewFormOpen(true)}>Tahrirlash</Button>
+            </div>
           </div>
         )}
         {otherReviews.length ? (
           <div>
             <div className="mb-4 flex justify-between">
-              <h2 className="mb-4 text-2xl font-bold">Baholar va fikrlar</h2>
+              <h2 className="mb-4 text-2xl tracking-wide font-semibold">Baholar va fikrlar</h2>
               {!userReview && (
                 <Button onClick={() => setIsReviewFormOpen(true)}>
                   + Fikr bildirish

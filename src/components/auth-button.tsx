@@ -24,7 +24,7 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
   );
   return user ? (
     <>
-      <Link href="/library" className="mr-8">Mening Kutubxonam</Link>
+      <Link href="/library" className="mr-8 hover:opacity-80">Mening Kutubxonam</Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="border-input h-8 w-8 border-2 mr-8">
@@ -38,9 +38,6 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
-          {/* <DropdownMenuItem asChild>
-            <Link href="/profile">Profile</Link>
-          </DropdownMenuItem> */}
           <DropdownMenuItem asChild>
             <Link href="/settings">Hisobni sozlash</Link>
           </DropdownMenuItem>
@@ -56,10 +53,10 @@ export function AuthButton({ authUser, signOut }: AuthButtonProps) {
     </>
   ) : (
     <div className="flex h-full">
-      <Link className="flex items-center justify-center px-8 -ml-8" href="/sign-in">
+      <Link className="flex items-center justify-center px-8 -ml-8 hover:opacity-70" href="/sign-in">
         Kirish
       </Link>
-      <Link className="flex items-center justify-center bg-primary h-full px-8 text-white" href="/sign-up">
+      <Link className="flex items-center justify-center bg-primary h-full px-8 text-white hover:bg-primary/90" href="/sign-up">
         Ro&apos;yxatdan otish
       </Link>
     </div>
