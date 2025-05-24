@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
+import { Button } from "./button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -50,10 +51,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           placeholder="Qidirish..."
           value={globalFilter ?? ""}
           onChange={e => setGlobalFilter(e.target.value)}
-          className="max-w-sm border rounded px-2 py-1"
+          className="max-w-sm border rounded-none px-2 py-1"
         />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-none border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
@@ -106,24 +107,28 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </Table>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-sm text-gray-500">
           {table.getFilteredRowModel().rows.length} ta {table.getRowModel().rows.length} ta qatordan.
         </div>
         <div className="space-x-2">
-          <button
-            className="border rounded px-2 py-1"
+          <Button
+            variant="outline"
+            size="sm"
+            className="px-2 py-1"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Oldingi
-          </button>
-          <button
-            className="border rounded px-2 py-1"
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="px-2 py-1"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             Keyingi
-          </button>
+          </Button>
         </div>
       </div>
     </div>

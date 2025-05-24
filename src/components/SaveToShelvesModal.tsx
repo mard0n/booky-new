@@ -37,14 +37,22 @@ export default function SaveToShelvesModal({ bookId, open, onOpenChange }: { boo
     else newSelected.add(shelfId);
     setSelected(newSelected);
     if (supabaseUserId) {
-      setBookShelves.mutate({ supabaseUserId, bookId, shelfIds: Array.from(newSelected) });
+      setBookShelves.mutate({ supabaseUserId, bookId, shelfIds: Array.from(newSelected) }, {
+        onSuccess: () => {
+          getShelves.refetch();
+        }
+      });
     }
   }
 
   async function handleCreateShelf() {
     if (!newShelfName.trim() || !supabaseUserId) return;
     // You need to implement/createShelf endpoint in backend
-    const res = await createShelf.mutateAsync?.({ supabaseUserId, name: newShelfName });
+    const res = await createShelf.mutateAsync?.({ supabaseUserId, name: newShelfName }, {
+      onSuccess: () => {
+        getShelves.refetch();
+      }
+    });
     if (res?.shelf) {
       setShelves([...shelves, { id: res.shelf.id, name: res.shelf.name, hasBook: false }]);
       setNewShelfName("");
