@@ -31,7 +31,7 @@ const SellerListingsOverview: React.FunctionComponent<
           return (
             <li className="text-sm" key={sellerListing.id}>
               <a
-                href={sellerListing.productLink}
+                href={sellerListing.productLink ?? ""}
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -106,28 +106,8 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
           alt="library"
         />
       );
-    }
-    switch (sellerListing.seller.type) {
-      case "Library":
-        return (
-          <img
-            className="h-full w-full object-cover"
-            src={sellerListing.seller.imageUrl}
-            alt="library"
-          />
-        );
-
-      case "Seller":
-        return (
-          <img
-            className="h-full w-full object-cover"
-            src={sellerListing.seller.imageUrl}
-            alt="seller"
-          />
-        );
-
-      default:
-        break;
+    } else {
+      return <img src={sellerListing.seller.imageUrl} alt="seller thumbnail" />
     }
   };
 
