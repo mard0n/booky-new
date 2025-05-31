@@ -62,28 +62,43 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
   }: {
     sellerListing: SellerListingsWithSeller[number];
   }) => {
-    switch (sellerListing.transactionType) {
-      case "Free":
-        return (
-          <Button>
-            Bepul olish <LinkExternalIcon />
-          </Button>
-        );
-
-      case "Borrow":
+    switch (sellerListing.seller.type) {
+      case "Library":
         return (
           <Button>
             Ijaraga olish <LinkExternalIcon />
           </Button>
         );
 
-      case "Buy":
-        return (
-          <Button>
-            {sellerListing.currency}
-            {sellerListing.price} ga sotib olish <LinkExternalIcon />
-          </Button>
-        );
+      case "Bookstore":
+        if (!sellerListing.price) {
+          return (
+            <Button>
+              Sotib olish <LinkExternalIcon />
+            </Button>
+          );
+        } else {
+          return (
+            <Button>
+              {sellerListing.price} so&apos;mga sotib olish <LinkExternalIcon />
+            </Button>
+          );
+        }
+
+      case "Online":
+        if (!sellerListing.price) {
+          return (
+            <Button>
+              Buyurtma qilish <LinkExternalIcon />
+            </Button>
+          );
+        } else {
+          return (
+            <Button>
+              {sellerListing.price} so&apos;mga buyurtma qilish <LinkExternalIcon />
+            </Button>
+          );
+        }
       default:
         return (
           <Button>
@@ -107,7 +122,7 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
         />
       );
     } else {
-      return <img src={sellerListing.seller.imageUrl} alt="seller thumbnail" />
+      return <img src={sellerListing.seller.imageUrl} alt="seller thumbnail" />;
     }
   };
 
@@ -119,31 +134,31 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
             key={sellerListing.id}
             className="relative flex flex-row overflow-hidden rounded-none"
           >
-            <CardContent className="flex gap-4">
-              <div className="flex flex-col justify-between">
-                <div>
-                  <Link
-                    href={`/seller/${sellerListing.seller.id}`}
-                    className="block hover:opacity-80"
-                  >
-                    <h3 className="mb-2 text-xl">
-                      {sellerListing.seller.name}
-                    </h3>
-                  </Link>
-                  <a
-                    href={sellerListing.seller.locationLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-800"
-                  >
-                    <p className="mb-4">
-                      {sellerListing.seller.location} <LinkExternalIcon />
-                    </p>
-                  </a>
-                </div>
+            <CardContent className="">
+              <div className="flex justify-between gap-4">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <Link
+                      href={`/seller/${sellerListing.seller.id}`}
+                      className="block hover:opacity-80"
+                    >
+                      <h3 className="mb-2 text-xl">
+                        {sellerListing.seller.name}
+                      </h3>
+                    </Link>
+                    <a
+                      href={sellerListing.seller.locationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-800"
+                    >
+                      <p className="mb-4">
+                        {sellerListing.seller.location} <LinkExternalIcon />
+                      </p>
+                    </a>
+                  </div>
 
-                <div className="mt-6 flex flex-col">
-                  {sellerListing.available ? (
+                  <div className="mt-6 flex flex-col">
                     <div className="flex gap-4">
                       <a
                         href={sellerListing.productLink ?? ""}
@@ -154,21 +169,19 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
                       </a>
                       <ContactModal sellerListing={sellerListing} />
                     </div>
+                  </div>
+                </div>
+                <div className="aspect-square w-2/10">
+                  {sellerListing.seller.imageUrl ? (
+                    <img
+                      className="h-full w-full object-cover"
+                      src={sellerListing.seller.imageUrl}
+                      alt="seller"
+                    />
                   ) : (
-                    <ContactModal sellerListing={sellerListing} />
+                    <DefaultSellerImage sellerListing={sellerListing} />
                   )}
                 </div>
-              </div>
-              <div className="aspect-square w-2/5">
-                {sellerListing.seller.imageUrl ? (
-                  <img
-                    className="h-full w-full object-cover"
-                    src={sellerListing.seller.imageUrl}
-                    alt="seller"
-                  />
-                ) : (
-                  <DefaultSellerImage sellerListing={sellerListing} />
-                )}
               </div>
             </CardContent>
           </Card>

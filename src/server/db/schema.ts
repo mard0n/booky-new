@@ -19,12 +19,6 @@ import { type User as AuthorizedUser } from "@supabase/supabase-js";
 // Define Enum for SellerListing sellerType
 export const sellerTypeEnum = pgEnum("seller_type", ["Library", "Bookstore", "Online"]);
 
-// New Enum for Transaction Type
-export const transactionTypeEnum = pgEnum("transaction_type", [
-  "Buy",
-  "Borrow",
-  "Free",
-]);
 
 // User Model
 export const users = pgTable("users", {
@@ -281,6 +275,7 @@ export const sellersRelations = relations(sellers, ({ many }) => ({
 }));
 
 export type SellerListings = typeof sellerListings.$inferSelect;
+
 export const sellerListings = pgTable("seller_listings", {
   id: uuid("id").primaryKey().defaultRandom(),
   bookId: uuid("book_id")
@@ -289,12 +284,8 @@ export const sellerListings = pgTable("seller_listings", {
   sellerId: uuid("seller_id") // Foreign key referencing the new sellers table
     .notNull()
     .references(() => sellers.id, { onDelete: "cascade" }),
-  price: real("price").notNull(),
-  currency: text("currency").notNull().default("UZS"),
-  available: boolean("available").default(true).notNull(),
-  transactionType: transactionTypeEnum("transaction_type")
-    .notNull()
-    .default("Buy"),
+  price: real("price"),
+  currency: text("currency").default("UZS"),
   productLink: text("productLink")
 });
 

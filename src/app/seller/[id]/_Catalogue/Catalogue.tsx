@@ -8,27 +8,28 @@ interface CatalogueProps {
   sellerId: string;
 }
 
-// type SellerListingsWithSeller =
-//   inferRouterOutputs<AppRouter>["book"]["getSellerListingsByBookId"];
-
 const Catalogue: React.FunctionComponent<CatalogueProps> = ({ sellerId }) => {
-  const { data: books } = api.book.getBooksThatAreOneSellerListingBySellerId.useQuery({
-    id: sellerId,
+  const { data: listings, isLoading } = api.book.getBooksBySellerId.useQuery({
+    sellerId,
   });
-  
-  if (!books?.length) {
+
+  if (isLoading) {
+    return <div>Tortilmoqda...</div>;
+  }
+
+  if (!listings?.length) {
     return (
       <div className="text-muted-foreground">
-        Bu kitob uchun sotuvchilar yoki kutubxonalar topilmadi.
+        Bu sotuvchida kitoblar mavjud emas.
       </div>
     );
   }
 
   return (
     <div className="flex gap-10 flex-wrap justify-center">
-      {books.map((book) => {
-        return <BookCard key={book.id} book={book} />
-      })}
+      {listings.map((listing) => (
+        <BookCard key={listing.id} book={listing.book} />
+      ))}
     </div>
   );
 };

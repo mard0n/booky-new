@@ -89,20 +89,10 @@ export const bookRouter = createTRPCRouter({
   getSellerListingsByBookId: publicProcedure.input(z.object({ id: z.string().uuid() })).query(async ({ ctx, input }) => {
     return ctx.db.query.sellerListings.findMany({
       where: (sellerListings, { eq }) => eq(sellerListings.bookId, input.id),
-      orderBy: (sellerListings, { asc }) => [
-        asc(sql`CASE ${sellerListings.transactionType}
-          WHEN 'Free' THEN 1
-          WHEN 'Borrow' THEN 2
-          WHEN 'Buy' THEN 3
-          ELSE 4
-        END`),
-      ],
       columns: {
         id: true,
         price: true,
         currency: true,
-        available: true,
-        transactionType: true,
         productLink: true
       },
       with: {
@@ -124,38 +114,7 @@ export const bookRouter = createTRPCRouter({
       },
     });
   }),
-  getBooksThatAreOneSellerListingBySellerId: publicProcedure
-  .input(z.object({ id: z.string().uuid() }))
-  .query(async ({ ctx, input }) => {
-    const books = await ctx.db.query.books.findMany({
-      with: {
-        sellerListings: true,
-      },
-      where: (books, { exists, eq }) => 
-        exists(
-          ctx.db.select().from(sellerListings)
-            .where(and(
-              eq(sellerListings.bookId, books.id),
-              eq(sellerListings.sellerId, input.id)
-            ))
-        ),
-      columns: {
-        id: true,
-        title: true,
-        author: true,
-        description: true,
-        coverImageUrl: true,
-        publicationDate: true,
-        genres: true,
-        genresText: true,
-        averageRating: true,
-        language: true,
-      },
-    });
-
-    // Filter books that have exactly one seller listing
-    return books.filter(book => book.sellerListings.length === 1);
-  }),
+  
   
   createReview: publicProcedure
     .input(z.object({
@@ -416,5 +375,28 @@ export const bookRouter = createTRPCRouter({
         .where(eq(shelves.id, input.shelfId));
 
       return { success: true };
+    }),
+  getBooksBySellerId: publicProcedure
+    .input(z.object({ sellerId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      return ctx.db.query.sellerListings.findMany({
+        where: (sellerListings, { eq }) => eq(sellerListings.sellerId, input.sellerId),
+        with: {
+          book: {
+            columns: {
+              id: true,
+              title: true,
+              author: true,
+              description: true,
+              coverImageUrl: true,
+              publicationDate: true,
+              genres: true,
+              genresText: true,
+              averageRating: true,
+              language: true
+            }
+          }
+        }
+      });
     }),
 });
