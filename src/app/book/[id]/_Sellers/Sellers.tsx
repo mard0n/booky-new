@@ -146,7 +146,7 @@ const Sellers: React.FunctionComponent<SellersProps> = ({ bookId }) => {
                   {sellerListing.available ? (
                     <div className="flex gap-4">
                       <a
-                        href={sellerListing.productLink}
+                        href={sellerListing.productLink ?? ""}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
