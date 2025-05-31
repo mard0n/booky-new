@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { books, genreTypeEnum, reviews, bookEntries, shelves } from "~/server/db/schema";
+import { books, genreTypeEnum, reviews, bookEntries, shelves, sellerListings } from "~/server/db/schema";
 import { z } from "zod";
 import { sql, eq, inArray, and } from "drizzle-orm";
 
@@ -124,13 +124,21 @@ export const bookRouter = createTRPCRouter({
       },
     });
   }),
-  getBooksBySellerId: publicProcedure.input(z.object({ id: z.string().uuid() })).query(async ({ ctx, input }) => {
-    return ctx.db.query.books.findMany({
+  getBooksThatAreOneSellerListingBySellerId: publicProcedure
+  .input(z.object({ id: z.string().uuid() }))
+  .query(async ({ ctx, input }) => {
+    const books = await ctx.db.query.books.findMany({
       with: {
-        sellerListings: {
-          where: (sellerListings, { eq }) => eq(sellerListings.sellerId, input.id),
-        },
+        sellerListings: true,
       },
+      where: (books, { exists, eq }) => 
+        exists(
+          ctx.db.select().from(sellerListings)
+            .where(and(
+              eq(sellerListings.bookId, books.id),
+              eq(sellerListings.sellerId, input.id)
+            ))
+        ),
       columns: {
         id: true,
         title: true,
@@ -144,6 +152,9 @@ export const bookRouter = createTRPCRouter({
         language: true,
       },
     });
+
+    // Filter books that have exactly one seller listing
+    return books.filter(book => book.sellerListings.length === 1);
   }),
   
   createReview: publicProcedure
@@ -406,4 +417,4 @@ export const bookRouter = createTRPCRouter({
 
       return { success: true };
     }),
-}); 
+});

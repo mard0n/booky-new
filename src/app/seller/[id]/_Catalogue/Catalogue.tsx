@@ -12,7 +12,7 @@ interface CatalogueProps {
 //   inferRouterOutputs<AppRouter>["book"]["getSellerListingsByBookId"];
 
 const Catalogue: React.FunctionComponent<CatalogueProps> = ({ sellerId }) => {
-  const { data: books } = api.book.getBooksBySellerId.useQuery({
+  const { data: books } = api.book.getBooksThatAreOneSellerListingBySellerId.useQuery({
     id: sellerId,
   });
   
@@ -25,7 +25,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({ sellerId }) => {
   }
 
   return (
-    <div>
+    <div className="flex gap-10 flex-wrap justify-center">
       {books.map((book) => {
         return <BookCard key={book.id} book={book} />
       })}
