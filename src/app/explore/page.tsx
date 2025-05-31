@@ -24,7 +24,7 @@ export default async function Explore() {
       <BookCategorySection title="Hozirda ommabop" books={popular} />
       <BookCategorySection title="Klassika" books={classic} />
       <BookCategorySection title="Sarguzasht" books={adventures} />
-      <BookCategorySection title="Falsafiy nasr" books={philosophical} />
+      <BookCategorySection title="Falsafiy adabiyot" books={philosophical} />
       <BookCategorySection title="Drama" books={drama} />
       <BookCategorySection title="O‘zini rivojlantirish" books={selfHelp} />
       {/* <BookCategorySection title="Nobadiiy adabiyot" books={nonfiction} /> */}

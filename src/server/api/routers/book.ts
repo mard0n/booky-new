@@ -19,6 +19,7 @@ export const bookRouter = createTRPCRouter({
         genres: true,
         genresText: true,
         averageRating: true,
+        language: true
       },
     });
   }),
@@ -37,6 +38,7 @@ export const bookRouter = createTRPCRouter({
         genres: true,
         genresText: true,
         averageRating: true,
+        language: true
       },
     });
   }),
@@ -53,6 +55,7 @@ export const bookRouter = createTRPCRouter({
         genres: true,
         genresText: true,
         averageRating: true,
+        language: true
       },
     });
   }),
@@ -138,6 +141,7 @@ export const bookRouter = createTRPCRouter({
         genres: true,
         genresText: true,
         averageRating: true,
+        language: true,
       },
     });
   }),
