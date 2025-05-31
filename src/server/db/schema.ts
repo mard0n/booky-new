@@ -17,7 +17,7 @@ import { relations } from "drizzle-orm";
 import { type User as AuthorizedUser } from "@supabase/supabase-js";
 
 // Define Enum for SellerListing sellerType
-export const sellerTypeEnum = pgEnum("seller_type", ["Library", "Seller"]);
+export const sellerTypeEnum = pgEnum("seller_type", ["Library", "Bookstore", "Online"]);
 
 // New Enum for Transaction Type
 export const transactionTypeEnum = pgEnum("transaction_type", [
@@ -81,6 +81,12 @@ export const genreTypeEnum = pgEnum("genre_type", [
   "Psychology",
 ]);
 
+export const languageTypeEnum = pgEnum("language_type", [
+  "uzbek",
+  "english",
+  "russian"
+]);
+
 // Book Model
 export const books = pgTable(
   "books",
@@ -94,6 +100,7 @@ export const books = pgTable(
     genres: genreTypeEnum("genres").array(),
     genresText: text("genres_text"),
     averageRating: real("average_rating"), // 'real' for single precision, 'doublePrecision' for double
+    language: languageTypeEnum("language"),
   },
   (table) => {
     return [
@@ -288,12 +295,7 @@ export const sellerListings = pgTable("seller_listings", {
   transactionType: transactionTypeEnum("transaction_type")
     .notNull()
     .default("Buy"),
-  productLink: text("productLink").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
+  productLink: text("productLink")
 });
 
 export const sellerListingsRelations = relations(sellerListings, ({ one }) => ({

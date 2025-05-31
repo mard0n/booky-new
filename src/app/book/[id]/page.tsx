@@ -42,7 +42,7 @@ export default async function BookPage({
               <dt>Nashr sanasi</dt>
               <dd>{book.publicationDate ?? "-"}</dd>
               <dt>Janrlar</dt>
-              <dd>{book.genres?.join(", ") ?? "-"}</dd>
+              <dd>{book.genresText ?? "-"}</dd>
             </dl>
           </div>
         </div>
