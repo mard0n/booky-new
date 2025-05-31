@@ -4,34 +4,34 @@ import Banner from "./_components/banner";
 
 export default async function Explore() {
   // Fetch real data from tRPC
-  const [popular, fiction, nonfiction, biography, selfHelp, history, historicalFiction, science, technology, adventure, drama] = await Promise.all([
+  const [popular, classic, adventures, philosophical, drama, selfHelp, nonfiction, psychology, biography, history, fantasy] = await Promise.all([
     api.book.getPopular(),
-    api.book.getByCategory({ category: "Fiction" }),
-    api.book.getByCategory({ category: "Non-fiction" }),
-    api.book.getByCategory({ category: "Biography" }),
-    api.book.getByCategory({ category: "Self-Help" }),
-    api.book.getByCategory({ category: "History" }),
-    api.book.getByCategory({ category: "Historical Fiction" }),
-    api.book.getByCategory({ category: "Science" }),
-    api.book.getByCategory({ category: "Technology" }),
-    api.book.getByCategory({ category: "Adventure" }),
+    api.book.getByCategory({ category: "Classic" }),
+    api.book.getByCategory({ category: "Adventures" }),
+    api.book.getByCategory({ category: "Philosophical prose" }),
     api.book.getByCategory({ category: "Drama" }),
+    api.book.getByCategory({ category: "Self-development" }),
+    api.book.getByCategory({ category: "Non-fiction literature" }),
+    api.book.getByCategory({ category: "Psychology" }),
+    api.book.getByCategory({ category: "Biography" }),
+    api.book.getByCategory({ category: "History" }),
+    api.book.getByCategory({ category: "Fantasy" }),
   ]);
 
   return (
     <div className="container mx-auto my-10">
       <Banner />
       <BookCategorySection title="Hozirda ommabop" books={popular} />
-      <BookCategorySection title="Badiiy adabiyot" books={fiction} />
-      <BookCategorySection title="Nobadiiy adabiyot" books={nonfiction} />
-      <BookCategorySection title="Biografiya" books={biography} />
-      <BookCategorySection title="O‘zini rivojlantirish" books={selfHelp} />
-      <BookCategorySection title="Tarixiy" books={history} />
-      <BookCategorySection title="Tarixiy badiiy adabiyot" books={historicalFiction} />
-      <BookCategorySection title="Fan" books={science} />
-      <BookCategorySection title="Texnologiya" books={technology} />
-      <BookCategorySection title="Sarguzasht" books={adventure} />
+      <BookCategorySection title="Klassika" books={classic} />
+      <BookCategorySection title="Sarguzasht" books={adventures} />
+      <BookCategorySection title="Falsafiy nasr" books={philosophical} />
       <BookCategorySection title="Drama" books={drama} />
+      <BookCategorySection title="O‘zini rivojlantirish" books={selfHelp} />
+      {/* <BookCategorySection title="Nobadiiy adabiyot" books={nonfiction} /> */}
+      <BookCategorySection title="Biografiya" books={biography} />
+      <BookCategorySection title="Psixologik roman" books={psychology} />
+      <BookCategorySection title="Tarixiy" books={history} />
+      <BookCategorySection title="Fantastika" books={fantasy} />
     </div>
   );
 }

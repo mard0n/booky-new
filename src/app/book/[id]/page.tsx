@@ -17,7 +17,9 @@ export default async function BookPage({
   const book = await api.book.getById({ id: id });
   if (!book) return notFound();
 
-  const sellerListings = await api.book.getSellerListingsByBookId({id: book.id})
+  const sellerListings = await api.book.getSellerListingsByBookId({
+    id: book.id,
+  });
   // const { data: sellerListings } = api.book.getSellerListingsByBookId.useQuery({
   //   id: bookId,
   // });
@@ -27,8 +29,8 @@ export default async function BookPage({
       <section className="container mx-auto my-10 flex flex-col items-center gap-5 px-8 lg:flex-row lg:items-start">
         <BookCover src={book.coverImageUrl} alt={book.title} bookId={book.id} />
         <div className="mb-6 flex max-w-3xl flex-col items-center lg:items-start">
-          <h1 className="mb-1 text-3xl font-libre ">{book.title}</h1>
-          <div className="text-gray-500 mb-2">{book.author}</div>
+          <h1 className="font-libre mb-1 text-3xl">{book.title}</h1>
+          <div className="mb-2 text-gray-500">{book.author}</div>
           {book.averageRating ? (
             <div className="mb-6">
               <Rating rating={book.averageRating} size="lg" showNumber={true} />
@@ -37,20 +39,8 @@ export default async function BookPage({
           <div className="text-gray-500">
             <div className="mb-5">{book.description ?? "Tavsif yo'q."}</div>
             <dl className="grid grid-cols-[150px_1fr] gap-1 text-gray-400/80">
-              <dt>ISBN</dt>
-              <dd>{book.isbn10 ?? "-"}</dd>
-              <dt>ISBN 13</dt>
-              <dd>{book.isbn13 ?? "-"}</dd>
-              <dt>Sahifalar</dt>
-              <dd>{book.pageCount ?? "-"}</dd>
-              <dt>Nashriyot</dt>
-              <dd>{book.publisher ?? "-"}</dd>
               <dt>Nashr sanasi</dt>
-              <dd>
-                {book.publicationDate
-                  ? new Date(book.publicationDate).toLocaleDateString()
-                  : "-"}
-              </dd>
+              <dd>{book.publicationDate ?? "-"}</dd>
               <dt>Janrlar</dt>
               <dd>{book.genres?.join(", ") ?? "-"}</dd>
             </dl>
@@ -70,13 +60,13 @@ export default async function BookPage({
           <Tabs.List className="mb-4 flex justify-around border-b">
             <Tabs.Trigger
               value="reviews"
-              className="data-[state=active]:border-primary px-4 py-2 cursor-pointer hover:text-primary/80 focus:outline-none data-[state=active]:border-b-2"
+              className="data-[state=active]:border-primary hover:text-primary/80 cursor-pointer px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
             >
               Fikrlar
             </Tabs.Trigger>
             <Tabs.Trigger
               value="get"
-              className="data-[state=active]:border-primary px-4 py-2 cursor-pointer hover:text-primary/80 focus:outline-none data-[state=active]:border-b-2"
+              className="data-[state=active]:border-primary hover:text-primary/80 cursor-pointer px-4 py-2 focus:outline-none data-[state=active]:border-b-2"
             >
               Kitobni olish ({sellerListings.length})
             </Tabs.Trigger>

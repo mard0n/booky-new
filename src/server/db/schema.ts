@@ -47,6 +47,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const genreTypeEnum = pgEnum("genre_type", [
   "Fiction",
+  "Classic",
   "Non-fiction",
   "Fantasy",
   "Mystery",
@@ -67,12 +68,17 @@ export const genreTypeEnum = pgEnum("genre_type", [
   "Western",
   "Crime",
   "Drama",
-  "Adventure",
+  "Adventures",
   "Comedy",
   "Documentary",
   "Young Adult",
   "Poetry",
   "Historical Fiction",
+  "Novels",
+  "Philosophical prose",
+  "Self-development",
+  "Non-fiction literature",
+  "Psychology",
 ]);
 
 // Book Model
@@ -82,14 +88,11 @@ export const books = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     title: text("title").notNull(),
     author: text("author").notNull(),
-    isbn10: text("isbn10").unique(),
-    isbn13: text("isbn13").unique(),
     description: text("description"), // TEXT type is default for text()
     coverImageUrl: text("cover_image_url"),
-    publicationDate: timestamp("publication_date", { withTimezone: true }),
-    publisher: text("publisher"),
-    pageCount: integer("page_count"),
-    genres: genreTypeEnum("genres").array().notNull(),
+    publicationDate: text("publication_date"),
+    genres: genreTypeEnum("genres").array(),
+    genresText: text("genres_text"),
     averageRating: real("average_rating"), // 'real' for single precision, 'doublePrecision' for double
   },
   (table) => {

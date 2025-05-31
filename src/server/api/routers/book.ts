@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { books, genreTypeEnum, reviews, bookEntries, shelves, users } from "~/server/db/schema";
+import { books, genreTypeEnum, reviews, bookEntries, shelves } from "~/server/db/schema";
 import { z } from "zod";
-import { sql, eq, asc, inArray, and } from "drizzle-orm";
+import { sql, eq, inArray, and } from "drizzle-orm";
 
 export const bookRouter = createTRPCRouter({
   getPopular: publicProcedure.query(async ({ ctx }) => {
@@ -13,14 +13,11 @@ export const bookRouter = createTRPCRouter({
         id: true,
         title: true,
         author: true,
-        isbn10: true,
-        isbn13: true,
         description: true,
         coverImageUrl: true,
         publicationDate: true,
-        publisher: true,
-        pageCount: true,
         genres: true,
+        genresText: true,
         averageRating: true,
       },
     });
@@ -34,14 +31,11 @@ export const bookRouter = createTRPCRouter({
         id: true,
         title: true,
         author: true,
-        isbn10: true,
-        isbn13: true,
         description: true,
         coverImageUrl: true,
         publicationDate: true,
-        publisher: true,
-        pageCount: true,
         genres: true,
+        genresText: true,
         averageRating: true,
       },
     });
@@ -53,14 +47,11 @@ export const bookRouter = createTRPCRouter({
         id: true,
         title: true,
         author: true,
-        isbn10: true,
-        isbn13: true,
         description: true,
         coverImageUrl: true,
         publicationDate: true,
-        publisher: true,
-        pageCount: true,
         genres: true,
+        genresText: true,
         averageRating: true,
       },
     });
@@ -141,14 +132,11 @@ export const bookRouter = createTRPCRouter({
         id: true,
         title: true,
         author: true,
-        isbn10: true,
-        isbn13: true,
         description: true,
         coverImageUrl: true,
         publicationDate: true,
-        publisher: true,
-        pageCount: true,
         genres: true,
+        genresText: true,
         averageRating: true,
       },
     });
