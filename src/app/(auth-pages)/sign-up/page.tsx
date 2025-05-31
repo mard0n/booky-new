@@ -12,6 +12,30 @@ import {
   CardTitle,
   CardDescription,
 } from "~/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+
+const UZBEKISTAN_REGIONS = [
+  "Toshkent shahri",
+  "Andijon viloyati",
+  "Buxoro viloyati",
+  "Farg'ona viloyati",
+  "Jizzax viloyati",
+  "Xorazm viloyati",
+  "Namangan viloyati",
+  "Navoiy viloyati",
+  "Qashqadaryo viloyati",
+  "Qoraqalpog'iston Respublikasi",
+  "Samarqand viloyati",
+  "Sirdaryo viloyati",
+  "Surxondaryo viloyati",
+  "Toshkent viloyati",
+];
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -54,6 +78,19 @@ export default async function Signup(props: {
           <CardContent>
             <form className="flex flex-col gap-4">
               <div className="space-y-2">
+                <label htmlFor="name" className="text-sm font-medium">
+                  Ismingiz
+                </label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Ismingizni kiriting"
+                  required
+                  className="h-12 rounded-none"
+                />
+              </div>
+              <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
                   Email
                 </label>
@@ -79,6 +116,23 @@ export default async function Signup(props: {
                   required
                   className="h-12 rounded-none"
                 />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="location" className="text-sm font-medium">
+                  Hududingiz
+                </label>
+                <Select name="location" required>
+                  <SelectTrigger className="h-12 rounded-none">
+                    <SelectValue placeholder="Hududni tanlang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {UZBEKISTAN_REGIONS.map((region) => (
+                      <SelectItem key={region} value={region}>
+                        {region}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <Button formAction={signUpAction} className="w-full h-12 rounded-none">
                 Ro&apos;yxatdan o&apos;tish
